@@ -3,6 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Socket.IO Chat Example</title>
+  <script type="text/javascript" src="js/phaser.js"></script>
+  <script type="text/javascript" src="js/boot.js"></script>
+  <script type="text/javascript" src="js/preload.js"></script>
+  <script type="text/javascript" src="js/game.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
 
 </head>
 <body>
@@ -84,7 +89,8 @@
       </div>
     </div>
 
-    <div class="test1" style="width:770px; height:630px ;border: 2px solid black;display: inline-block;vertical-align:top;"></div>
+    <div id="gameDiv" class="test1" style="width:58%; height:(60*58)/(63/77)% ;border: 2px solid black;display: inline-block;vertical-align:top;"></div>
+
     <li class="chat page" style="border:2px solid black;display: inline-block">
       <div class="chatArea">
         <ul class="messages"></ul>
@@ -102,6 +108,8 @@
 
 <!--   </div>
  -->
+
+  <script src="js/main.js"></script>
 
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <!-- Latest compiled and minified CSS -->
