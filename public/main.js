@@ -41,7 +41,7 @@ $(function() {
 
   // Sets the client's username
   function setUsername () {
-    username = cleanInput($usernameInput.val().trim());
+    var username = cleanInput($usernameInput.val().trim());
 
     // if (data.users.indexOf(username) == -1) {
     //   // alert("retype your name!")
@@ -51,16 +51,10 @@ $(function() {
 
       // if (data.users.indexOF(username) == -1) {
         if(username){
-        // $testing2.hide();
-        $loginPage.fadeOut();
-        $pages.fadeIn();
-        $chatPage.show();
-        $loginPage.off('click');
-        $currentInput = $inputMessage.focus();
-        // Tell the server your username
         socket.emit('add user', username);
-      
-      };
+      }
+        // $testing2.hide();
+       
     // };
   }
 
@@ -307,6 +301,22 @@ $(function() {
   // alert(data);
   // log('123');
   onlineUsers(data);
+  });
+
+  socket.on('login successful', function (data) {
+    username = data.username;
+        $loginPage.fadeOut();
+        $pages.fadeIn();
+        $chatPage.show();
+        $loginPage.off('click');
+        $currentInput = $inputMessage.focus();
+        // Tell the server your username
+  });
+
+  socket.on('invalid user', function (data) {
+    // Do nothing
+    $('.form h3').text("Another user has this name already please use a different username")
+  
   });
 
   // socket.on('check'),function(data){

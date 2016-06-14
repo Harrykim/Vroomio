@@ -61,6 +61,10 @@ io.on('connection', function (socket) {
   // when the client emits 'add user', this listens and executes
   socket.on('add user', function (username) {
     if (addedUser) return;
+    if (users.indexOf(username)!= -1){
+      socket.emit('invalid user', username);
+      return;
+    }
 
     // we store the username in the socket session for this client
 
@@ -69,6 +73,8 @@ io.on('connection', function (socket) {
     ++numUsers;
     addedUser = true;
     users.push(username);
+
+    socket.emit('login successful', { username: username});
 
     var newPoint = new Point({username: username, points: 0});
     newPoint.save(function(err){
