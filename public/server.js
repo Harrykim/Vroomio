@@ -1,12 +1,22 @@
 var express = require('express');
+var mongoose = require('mongoose');
 var app = express();
 var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+// var io = require('../..')(server)
+var io = require('socket.io')(server); 
+var port = process.env.PORT || 3000;
+var users = [];
+var playerMovement = require('./server');
+
+server.listen(port, function () {
+  console.log('Server listening at port %d', port);
+});
+
 var self;
 
 var SOCKETS_LIST = {};
 
-app.use('/', express.static(__dirname));
+app.use(express.static(__dirname + '/public'));
 
 io.on('connection', onSocketConnection);
 
