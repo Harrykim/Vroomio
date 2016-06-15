@@ -11,7 +11,9 @@ function playerMovements(io) {
 
   function onSocketConnection(socket){
     SOCKETS_LIST[socket.id] = socket
-    //console.log(socket.id + " connected");
+    console.log("GAME LOGIC socket connected with socket.id: " + socket.id);
+    console.log("GAME LOGIC now we have " + Object.keys(SOCKETS_LIST).length + 
+      " sockets connected: " + JSON.stringify(Object.keys(SOCKETS_LIST)));
     // self = socket
     socket.on('new player', onNewPlayer);
     socket.on('disconnect', onClientDisconnect);
@@ -26,7 +28,7 @@ function playerMovements(io) {
 
   function onPlayerMovement(data){
       var pack = {}
-      //console.log("on player movement")
+      console.log("GAME LOGIC on player movement")
       pack = {
         id: data.id,
         x: data.x,
@@ -37,13 +39,13 @@ function playerMovements(io) {
 
 
   function onClientDisconnect(){
-    //console.log("i got to onClientDisconnect")
+    console.log("GAME LOGIC i got to onClientDisconnect")
     delete SOCKETS_LIST[this.id];
     this.broadcast.emit('remove player', {id: this.id});
   };
 
   function onNewPlayer(){
-  //console.log("i got to onNewPlayer")
+    console.log("GAME LOGIC i got to onNewPlayer")
     for(var socketID in SOCKETS_LIST){
       if(SOCKETS_LIST.hasOwnProperty(socketID)){
         this.emit('new player', {

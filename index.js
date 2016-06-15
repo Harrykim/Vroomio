@@ -10,7 +10,7 @@ var users = [];
 var playerMovement = require('./server');
 
 server.listen(port, function () {
-  console.log('Server listening at port %d', port);
+  console.log('Chat socket server listening at port %d', port);
 });
 
 
@@ -43,17 +43,16 @@ var numUsers = 0;
 io.on('connection', function (socket) {
   console.log(Point.find({}));
   var addedUser = false;
-    console.log(socket.id)
+  console.log("chat connection happened, with this socket.id: " + socket.id)
 
-
-    socket.emit('check',{
-      users: users
-    });
+  socket.emit('check',{
+    users: users
+  });
 
   // when the client emits 'new message', this listens and executes
   socket.on('new message', function (data) {
     // we tell the client to execute 'new message'
-      socket.broadcast.emit('new message', {
+    socket.broadcast.emit('new message', {
       username: socket.username,
       message: data
     });

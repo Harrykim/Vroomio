@@ -350,11 +350,11 @@ $(function() {
   });
 
   socket.on('online',function(data){
-  // console.log(data);
-  // alert(data);
-  // log('123');
-  onlineUsers(data);
-  hostVideo(data);
+    // console.log(data);
+    // alert(data);
+    // log('123');
+    onlineUsers(data);
+    hostVideo(data);
   });
 
   // socket.on('host video', function(data){

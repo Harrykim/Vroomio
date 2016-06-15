@@ -29,7 +29,7 @@ SideScroller.Game.prototype = {
     this.blockedlayer = this.map.createLayer('blockedLayer');
     this.map.setCollisionBetween(1, 100000, true, 'blockedLayer');
     // this.backgroundlayer.resizeWorld();
-    socket = io.connect('http://localhost:3000');
+    socket = io();
     createRemotePlayers()
     createRemoteBullets()
     addSocketHandlers();
