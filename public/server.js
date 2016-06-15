@@ -18,7 +18,7 @@ function onSocketConnection(socket){
   socket.on('disconnect', onClientDisconnect);
   socket.on('movement', onPlayerMovement);
   socket.on('bulletShot', function(data){
-      console.log("i got to on bullet shot")
+      //console.log("i got to on bullet shot")
       console.log(data.bulletX)
       socket.broadcast.emit('remotePlayerBullet', {id: data.id, x: data.bulletX, y: data.bulletY})
   });
@@ -38,13 +38,13 @@ function onPlayerMovement(data){
 
 
 function onClientDisconnect(){
-  console.log("i got to onClientDisconnect")
+ // console.log("i got to onClientDisconnect")
   delete SOCKETS_LIST[this.id];
   this.broadcast.emit('remove player', {id: this.id});
 };
 
 function onNewPlayer(){
-console.log("i got to onNewPlayer")
+//console.log("i got to onNewPlayer")
   for(var socketID in SOCKETS_LIST){
     if(SOCKETS_LIST.hasOwnProperty(socketID)){
       this.emit('new player', {

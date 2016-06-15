@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Socket.IO Chat Example</title>
+  <title>Vroomio</title>
   <script type="text/javascript" src="js/phaser.js"></script>
   <script type="text/javascript" src="js/boot.js"></script>
   <script type="text/javascript" src="js/preload.js"></script>
@@ -22,10 +22,38 @@
             <th colspan="2">Current Online Users</th>
           </thead>
           <tbody class="online">
- 
+          <button type="button" class="hostvideo joinchat" data-toggle="modal" data-target="#myModal"> Host Video Chat</button>
           </tbody>
+         
         </table>
+
       </div>
+
+            <!-- Button trigger modal -->
+
+
+      <!-- Modal -->
+     <div class="clearfix"> 
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Video Chat</h4>
+            </div>
+            <div class="modal-body"  >
+               <iframe src="https://appear.in/your-room-name" id ="iframe" width="640" height="480" frameborder="0"></iframe>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
     
       <div style = "height: 50%;overflow:auto;margin:0px;">
         <table class="table" >
@@ -101,7 +129,7 @@
 
     <li class="login page">
       <div class="form">
-        <h3 class="title">What's your nickname?</h3>
+        <h3 class="title">Please enter your username</h3>
         <input class="usernameInput" type="text" maxlength="14" />
       </div>
     </li>

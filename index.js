@@ -58,6 +58,13 @@ io.on('connection', function (socket) {
       message: data
     });
   });
+  
+
+  socket.on('host video', function(data){
+    username: socket.username
+    console.log("logging")
+    socket.emit('host video', username)
+  })
 
   // when the client emits 'add user', this listens and executes
   socket.on('add user', function (username) {
@@ -98,8 +105,11 @@ io.on('connection', function (socket) {
     users: users
     });
 
+    socket.emit('host video', {
+      username:username , 
+      users: users
+    });
 
-    
   });
 
 

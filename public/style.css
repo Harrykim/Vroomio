@@ -63,6 +63,43 @@ ul {
   width: 100%;
 }
 
+.modal-content {
+    width: 48em;
+}
+
+.joinchat{
+  color: blue;
+  cursor: pointer;
+}
+.hostvideo {
+   border-top: 1px solid #020405;
+   background: #040708;
+   background: -webkit-gradient(linear, left top, left bottom, from(#07090a), to(#040708));
+   background: -webkit-linear-gradient(top, #07090a, #040708);
+   background: -moz-linear-gradient(top, #07090a, #040708);
+   background: -ms-linear-gradient(top, #07090a, #040708);
+   background: -o-linear-gradient(top, #07090a, #040708);
+   padding: 11px 22px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: #ffffff;
+   font-size: 15px;
+   font-family: Helvetica, Arial, Sans-Serif;
+   text-decoration: none;
+   vertical-align: middle;
+   position: absolute;
+   bottom: 50%;
+   width: 100%;
+   }
+.hostvideo:active {
+   border-top-color: #000000;
+   background: #000000;
+  position: absolute;
+  bottom: 50%;
+   }
+
 .login.page .form .usernameInput {
   background-color: transparent;
   border: none;

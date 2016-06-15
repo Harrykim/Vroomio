@@ -11,14 +11,14 @@ function playerMovements(io) {
 
   function onSocketConnection(socket){
     SOCKETS_LIST[socket.id] = socket
-    console.log(socket.id + " connected");
+    //console.log(socket.id + " connected");
     // self = socket
     socket.on('new player', onNewPlayer);
     socket.on('disconnect', onClientDisconnect);
     socket.on('movement', onPlayerMovement);
     socket.on('bulletShot', function(data){
-        console.log("i got to on bullet shot")
-        console.log(data.bulletX)
+        //console.log("i got to on bullet shot")
+        //console.log(data.bulletX)
         socket.broadcast.emit('remotePlayerBullet', {id: data.id, x: data.bulletX, y: data.bulletY})
     });
 
@@ -26,7 +26,7 @@ function playerMovements(io) {
 
   function onPlayerMovement(data){
       var pack = {}
-      console.log("on player movement")
+      //console.log("on player movement")
       pack = {
         id: data.id,
         x: data.x,
@@ -37,13 +37,13 @@ function playerMovements(io) {
 
 
   function onClientDisconnect(){
-    console.log("i got to onClientDisconnect")
+    //console.log("i got to onClientDisconnect")
     delete SOCKETS_LIST[this.id];
     this.broadcast.emit('remove player', {id: this.id});
   };
 
   function onNewPlayer(){
-  console.log("i got to onNewPlayer")
+  //console.log("i got to onNewPlayer")
     for(var socketID in SOCKETS_LIST){
       if(SOCKETS_LIST.hasOwnProperty(socketID)){
         this.emit('new player', {

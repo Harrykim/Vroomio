@@ -198,21 +198,53 @@ $(function() {
     // add online users
   function onlineUsers(data){
     // console.log("i hit online users")
-    console.log(data.users);
+    // console.log(data.users);
+
     $('.online').empty();
     for(var i=0; i < (data.users).length; i++){
     var order = i + 1
-    $('.online').append("<tr class='"+ data.users[i] +"'><td>" + order + "</td><td>"+ data.users[i] +"</td></tr>");
+    $('.online').append("<tr class='"+ data.users[i] +"'><td>" + order + " </td><td>"+ data.users[i] +"</td><td><p type ='button' class = 'joinchat' data-toggle='modal' data-target='#myModal'>Join</p></td></tr>" );
     // $('.online').append("<tr class='"+ data.username +"'><td>"+ data.numUsers +"</td><td>"+ data.username +"</td></tr>");
     }
+    //hostVideo(data)
+
+
+
   };
 
-  // remove users
+  // remove users 
   function removeUsers(data){
     console.log(data.users)
     // console.log("i hit remove users")
     $("." + data.username ).remove();
   };
+
+  function hostVideo(data){
+    console.log(data.username)
+    $(".hostvideo").click(function(){
+    $("#iframe").attr('src', 'https://appear.in/'+data.username)
+    //$("."+username).append("<td><a href =https://appear.in/"+username+">Join</a></td>")
+    })
+  }
+
+
+
+
+
+// jQuery('.hostvideo').click(function(){
+//   $(this).data('clicked', true);
+// });
+// Then, to check if it was clicked and perform an action:
+
+// if($('.hostvideo').data('clicked')) {
+//     $("."+data.username+" td").eq(1).html(data.username + "&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp"+"<a href =https://appear.in/"+username+">Join</a>")
+// } else {
+//     $('.online').append("<tr class='"+ data.users[i] +"'><td>" + order + "&nbsp &nbsp </td><td>"+ data.users[i] +"</td></tr>");
+// }
+
+
+
+
 
   // Keyboard events
 
@@ -250,6 +282,8 @@ $(function() {
   });
 
   // Click events
+  //change the appear in url to the person hosting it
+
 
   // Focus input when clicking anywhere on login page
   $loginPage.click(function () {
@@ -260,6 +294,12 @@ $(function() {
   $inputMessage.click(function () {
     $inputMessage.focus();
   });
+
+  //joining a chat
+
+  $(".joinchat").click(function(){
+    $("#iframe").attr('src', 'https://appear.in/'+username)
+  })
 
   // Socket events
 
@@ -284,6 +324,7 @@ $(function() {
     log(data.username + ' joined');
     addParticipantsMessage(data);
     onlineUsers(data);
+    hostVideo(data);
   });
 
   // Whenever the server emits 'user left', log it in the chat body
@@ -293,6 +334,7 @@ $(function() {
     removeChatTyping(data);
     // removeUsers(data);
     onlineUsers(data);
+
   });
 
   // Whenever the server emits 'typing', show the typing message
@@ -310,7 +352,14 @@ $(function() {
   // alert(data);
   // log('123');
   onlineUsers(data);
+  hostVideo(data);
   });
+
+  // socket.on('host video', function(data){
+  //   console.log("got here!")
+  //   onlineUsers(data)
+  //   hostVideo(data);
+  // })
 
   socket.on('login successful', function (data) {
     username = data.username;
