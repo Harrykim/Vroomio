@@ -27,7 +27,13 @@ $(function() {
   var lastTypingTime;
   var $currentInput = $usernameInput.focus();
 
-  var socket = io();
+  // var socket = io();
+  var socket = io.connect('https://domain.com', {
+  'force new connection': false,
+  'reconnection delay': 500,
+  'max reconnection attempts': 10,
+  })
+
 
   function addParticipantsMessage (data) {
     var message = '';
