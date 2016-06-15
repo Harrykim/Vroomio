@@ -42,7 +42,7 @@ SideScroller.Game.prototype = {
     bullets = this.game.add.group();
     bullets.enableBody = true;
     bullets.physicsBodyType = Phaser.Physics.ARCADE;
-    bullets.createMultiple(1, 'bullet');
+    bullets.createMultiple(3, 'bullet');
     bullets.setAll('anchor.x', 1);
     bullets.setAll('anchor.y', 1);
     bullets.setAll('outOfBoundsKill', true);
@@ -56,7 +56,7 @@ SideScroller.Game.prototype = {
     localPlayer.animations.add('jumpp', [23,24,25,26,27,28,29,30,31,32]);
     localPlayer.animations.add('runn', [33,34,35,36,37,38,39,40,41,42]);
     localPlayer.animations.add('walkk', [43,44,45,46,47,48,49,50,51,52]);
-    specialC = this.game.input.keyboard.addKey(Phaser.Keyboard.C);
+    specialC = this.game.input.keyboard.addKey(Phaser.KeyCode.TILDE);
     this.fireButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.cursors = this.game.input.keyboard.createCursorKeys();
     // socket.on('playerMovement', onPlayerMovement);  
@@ -73,23 +73,23 @@ SideScroller.Game.prototype = {
     this.game.physics.arcade.collide(bullets, this.blockedlayer, collisionHandler, null, this);
     this.game.physics.arcade.collide(remoteBullets, localPlayer, processHandler, null, this);
     this.game.physics.arcade.overlap(bullets, remotePlayers, processHandler2, null, this);
-    if (this.fireButton.isDown){
-      localPlayer.animations.play('attackk', 25, true);
-      if (this.game.time.now > bulletTime) {
-        bullet = bullets.getFirstExists(false);
-        if (bullet) {
-                //Bullet origin
-                bullet.reset(localPlayer.x + 85, localPlayer.y + 53);
-                //Bullet speed
-                bullet.body.velocity.x = 400;
-                socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y});
-                console.log("this is my bullet's x: "+ bullet.x);
-                console.log("this is my bullet's y: "+ bullet.y);
-                // socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y})
-                bulletTime = this.game.time.now + 500;
-        }
-      }
-    } 
+    // if (this.fireButton.isDown){
+    //   localPlayer.animations.play('attackk', 25, true);
+    //   if (this.game.time.now > bulletTime) {
+    //     bullet = bullets.getFirstExists(false);
+    //     if (bullet) {
+    //             //Bullet origin
+    //             bullet.reset(localPlayer.x + 85, localPlayer.y + 53);
+    //             //Bullet speed
+    //             bullet.body.velocity.x = 400;
+    //             socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y});
+    //             console.log("this is my bullet's x: "+ bullet.x);
+    //             console.log("this is my bullet's y: "+ bullet.y);
+    //             // socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y})
+    //             bulletTime = this.game.time.now + 500;
+    //     }
+    //   }
+    // } 
     
 
     if (this.cursors.left.isDown && specialC.isDown) {
@@ -137,23 +137,23 @@ SideScroller.Game.prototype = {
     }
 
 
-    // else if (this.fireButton.isDown){
-    //       localPlayer.animations.play('attackk', 25, true);
-    //       if (this.game.time.now > bulletTime) {
-    //           bullet = bullets.getFirstExists(false);
-    //           if (bullet) {
-    //               //Bullet origin
-    //               bullet.reset(localPlayer.x + 85, localPlayer.y + 53);
-    //               //Bullet speed
-    //               bullet.body.velocity.x = 400;
-    //               //Bullet fire rate
-    //               console.log("this is my bullet's x: "+ bullet.x);
-    //               console.log("this is my bullet's y: "+ bullet.y);
-    //               // socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y});
-    //               bulletTime = this.game.time.now + 500;
-    //           }
-    //       }
-    // }
+    else if (this.fireButton.isDown){
+          localPlayer.animations.play('attackk', 25, true);
+          if (this.game.time.now > bulletTime) {
+              bullet = bullets.getFirstExists(false);
+              if (bullet) {
+                  //Bullet origin
+                  bullet.reset(localPlayer.x + 85, localPlayer.y + 53);
+                  //Bullet speed
+                  bullet.body.velocity.x = 400;
+                  //Bullet fire rate
+                  console.log("this is my bullet's x: "+ bullet.x);
+                  console.log("this is my bullet's y: "+ bullet.y);
+                  socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y});
+                  bulletTime = this.game.time.now + 500;
+              }
+          }
+    }
     else {
         localPlayer.animations.play('idlee', 5, true);
     };
