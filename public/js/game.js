@@ -1,6 +1,5 @@
 var SideScroller = SideScroller || {};
 var specialC;
-var socket;
 var bulletTime = 0;
 var bullets;
 var localPlayer;
@@ -9,8 +8,68 @@ var REMOTE_PLAYERS = {};
 var remoteBullets = {};
 // var remoteBullet; 
 var bullet;
-
+var socket
 var bulletHitPlayer = false;
+var afterHitSpeed = 0.5;
+// var fullLobby = false;
+SideScroller.Boot = function(){};
+
+//setting game configuration and loading assets for the loading screen.
+
+SideScroller.Boot.prototype = {
+  preload: function(){
+    this.load.image('preloadbar', 'assets/images/preloader-bar.png');
+  },
+
+  create: function(){
+    this.game.stage.backgroundColor = "#87CEFA";
+    this.stage.disableVisibilityChange = false;
+    this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    this.scale.pageAlignHorizontally = true;
+    this.scale.pageAlignVertically = true;
+    // this.scale.setScreenSize(true);
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    this.state.start('Preload');
+  }
+}
+
+SideScroller.Preload = function(){};
+
+SideScroller.Preload.prototype = {
+  preload: function(){
+    this.preloadbar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'preloadbar');
+    this.preloadbar.anchor.setTo(0.5, 0.5);
+    this.preloadbar.scale.setTo(3);
+    this.load.setPreloadSprite(this.preloadbar);
+
+    this.load.tilemap('level1', 'assets/tilemaps/map10.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.image('gameTiles', 'assets/images/orig_tiles_spritesheet2.png');
+    this.load.spritesheet('player', 'assets/images/enemymoving.png', 68, 96);
+    // this.load.image('playerDuck', 'assets/images/player_duck.png');
+    // this.load.image('playerDead', 'assets/images/player_dead.png');
+    // this.load.image('goldCoin', 'assets/images/goldCoin.png');
+    // this.load.audio('coin', 'assets/audio/coin.wav');
+    this.load.image('bullet', '/assets/images/bullet.png')
+  },
+
+  create: function(){
+    this.state.start('Game');
+    // socket = io.connect('http://localhost:3000');
+
+    // socket.name = "yoooo"
+    // console.log(socket.name + Math.random())
+    // console.log(socket)
+    // socket.emit('lobby', {name: socket.name})
+    // socket.on('gameStart', checkIfPlayer);
+
+  },
+
+  // update: function(){
+  //   // if(fullLobby == true){
+
+  //   // }
+  // }
+}
 
 
 SideScroller.Game = function(){};
@@ -24,17 +83,21 @@ SideScroller.Game.prototype = {
     this.map = this.game.add.tilemap('level1');
     this.map.addTilesetImage('orig_tiles_spritesheet', 'gameTiles')
     // this.backgroundlayer = this.map.createLayer('backgroundLayer');
-    this.game.world.setBounds(0,0,5500,760);
+    this.game.world.setBounds(0,0,7700,1540);
 
     this.blockedlayer = this.map.createLayer('blockedLayer');
+    // this.blockedlayer.debug = true;
     this.map.setCollisionBetween(1, 100000, true, 'blockedLayer');
     // this.backgroundlayer.resizeWorld();
-    socket = io();
+    // if(socket == undefined){
+    // }
+    socket = io.connect('http://localhost:3000');
     createRemotePlayers()
     createRemoteBullets()
     addSocketHandlers();
 
     localPlayer = this.game.add.sprite(100, 200, 'player');
+
     this.game.physics.arcade.enable(localPlayer);
     this.game.camera.follow(localPlayer);
 
@@ -48,7 +111,7 @@ SideScroller.Game.prototype = {
     bullets.setAll('outOfBoundsKill', true);
     bullets.setAll('checkWorldBounds', true);
     socket.on('playerMovement', onPlayerMovement);
-    localPlayer.body.gravity.y = 1000;
+    localPlayer.body.gravity.y = 800;
     // remotePlayers.animations.add('walkk', 25, true); 
     localPlayer.animations.add('idlee', [0,1,2]);
     localPlayer.animations.add('attackk', [3,4,5,6,7,8,9,10,11,12]);
@@ -73,6 +136,7 @@ SideScroller.Game.prototype = {
     this.game.physics.arcade.collide(bullets, this.blockedlayer, collisionHandler, null, this);
     this.game.physics.arcade.collide(remoteBullets, localPlayer, processHandler, null, this);
     this.game.physics.arcade.overlap(bullets, remotePlayers, processHandler2, null, this);
+    // this.game.physics.arcade.collide(remotePlayers, localPlayer);
     // if (this.fireButton.isDown){
     //   localPlayer.animations.play('attackk', 25, true);
     //   if (this.game.time.now > bulletTime) {
@@ -91,7 +155,7 @@ SideScroller.Game.prototype = {
     //   }
     // } 
     
-
+    if(!bulletHitPlayer){
     if (this.cursors.left.isDown && specialC.isDown) {
           localPlayer.body.velocity.x = -300;
           localPlayer.animations.play('runn', 25, true);
@@ -150,6 +214,7 @@ SideScroller.Game.prototype = {
                   console.log("this is my bullet's x: "+ bullet.x);
                   console.log("this is my bullet's y: "+ bullet.y);
                   socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y});
+                  // socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y});
                   bulletTime = this.game.time.now + 500;
               }
           }
@@ -157,6 +222,74 @@ SideScroller.Game.prototype = {
     else {
         localPlayer.animations.play('idlee', 5, true);
     };
+  } else {
+        if (this.cursors.left.isDown && specialC.isDown) {
+          localPlayer.body.velocity.x = -300*afterHitSpeed;
+          localPlayer.animations.play('runn', 25, true);
+          if (this.cursors.up.isDown && localPlayer.body.blocked.down) {
+              localPlayer.body.velocity.y = -690*afterHitSpeed;
+              localPlayer.animations.play('jumpp', 25, true);
+          }
+    }
+    else if (this.cursors.left.isDown) {
+            localPlayer.body.velocity.x = -250*afterHitSpeed;
+      // localPlayer.animations.play('walkk', 25, true);
+      if (this.cursors.up.isDown && localPlayer.body.blocked.down){
+        localPlayer.body.velocity.y = -580*afterHitSpeed;
+        localPlayer.animations.play('jumpp', 25, true);
+      }
+      else {
+        localPlayer.animations.play('walkk', 25, true);
+      }
+    }  
+    else if (this.cursors.right.isDown && specialC.isDown) {
+          localPlayer.body.velocity.x = 300*afterHitSpeed;
+          localPlayer.animations.play('runn', 25, true);
+          if (this.cursors.up.isDown && localPlayer.body.blocked.down){
+              localPlayer.body.velocity.y = -690*afterHitSpeed;
+              localPlayer.animations.play('jumpp', 25, true);
+          } 
+    }
+    else if (this.cursors.right.isDown) {
+          localPlayer.body.velocity.x = 250*afterHitSpeed;
+          localPlayer.animations.play('walkk', 25, true);
+          if (this.cursors.up.isDown && localPlayer.body.blocked.down){
+              localPlayer.body.velocity.y = -580*afterHitSpeed;
+              localPlayer.animations.play('jumpp', 25, true);
+          }   
+    } 
+    else if (this.cursors.up.isDown && specialC.isDown && localPlayer.body.blocked.down) {
+          localPlayer.body.velocity.y = -690*afterHitSpeed;
+          localPlayer.animations.play('jumpattackk', 25, true);      
+    }    
+    else if (this.cursors.up.isDown && localPlayer.body.blocked.down) {
+          localPlayer.body.velocity.y = -580*afterHitSpeed;
+          localPlayer.animations.play('jumpp', 25, true);
+    }
+
+
+    else if (this.fireButton.isDown){
+          localPlayer.animations.play('attackk', 25, true);
+          if (this.game.time.now > bulletTime) {
+              bullet = bullets.getFirstExists(false);
+              if (bullet) {
+                  //Bullet origin
+                  bullet.reset(localPlayer.x + 85, localPlayer.y + 53);
+                  //Bullet speed
+                  bullet.body.velocity.x = 400;
+                  //Bullet fire rate
+                  console.log("this is my bullet's x: "+ bullet.x);
+                  console.log("this is my bullet's y: "+ bullet.y);
+                  socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y});
+                  // socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y});
+                  bulletTime = this.game.time.now + 500;
+              }
+          }
+    }
+    else {
+        localPlayer.animations.play('idlee', 5, true);
+    };
+  }
       if(localPlayer.x >= this.game.world.width) {
         this.game.state.start('Game');
       }
@@ -170,7 +303,12 @@ SideScroller.Game.prototype = {
   },
   render: function(){
     this.game.debug.text(this.game.time.fps || "---", 20, 70, "#00ff00", "40px Courier");
-  }
+
+    // Sprite debug info
+    this.game.debug.spriteInfo(localPlayer, 32, 32);
+
+}
+  
 
 };
 
@@ -190,8 +328,8 @@ function onSocketConnect(){
 };
 
 function onPlayerMovement(data){
-  console.log("remote player's x: " + data.x)
-  console.log("remote player's y: " + data.y)
+  // console.log("remote player's x: " + data.x)
+  // console.log("remote player's y: " + data.y)
   // if(remotePlayers[data.id].id == data.id) {
     // var id = "/#" + data.id;
     // console.log("i got to on player movement")
@@ -210,7 +348,7 @@ function onRemotePlayerBullet(data) {
 
   this.remoteBullet = remoteBullets.create(
     data.x,
-    data.y + 5,
+    data.y - 13,
     'bullet'
     )
   this.remoteBullet.body.velocity.x = 400;
@@ -220,7 +358,7 @@ function onRemotePlayerBullet(data) {
   // remoteBullet = bullet;
   // bullet.body.velocity.x = 400;
   this.remoteBullet.enableBody = true;
-  SideScroller.game.physics.enable(remoteBullet,Phaser.Physics.ARCADE);
+  SideScroller.game.physics.enable(this.remoteBullet,Phaser.Physics.ARCADE);
   
   this.remoteBullet.physicsBodyType = Phaser.Physics.ARCADE;
   this.remoteBullet.body.velocity.x = 400;
@@ -293,7 +431,23 @@ function processHandler(bullet, object){
   console.log(object)
   object.kill();
   bulletHitPlayer = true;
+  setTimeout(fasterFunc, 3000);
   console.log(bulletHitPlayer);
+}
+
+function fasterFunc(){
+  bulletHitPlayer = false;
+}
+
+function checkIfPlayer(data){
+  // console.log(data.id);
+  // if(data.players[0] != socket.name ||
+  //   data.players[1] != socket.name ||
+  //   data.players[2] != socket.name ||
+  //   data.players[3] != socket.name
+  //   ) {
+       fullLobby = true;
+  // }consol
 }
 
 function processHandler2(bullet, object){

@@ -11,24 +11,26 @@ function playerMovements(io) {
 
   function onSocketConnection(socket){
     SOCKETS_LIST[socket.id] = socket
-    console.log("GAME LOGIC socket connected with socket.id: " + socket.id);
-    console.log("GAME LOGIC now we have " + Object.keys(SOCKETS_LIST).length + 
-      " sockets connected: " + JSON.stringify(Object.keys(SOCKETS_LIST)));
-    // self = socket
+    console.log(socket.id + " connected");
+    self = socket
     socket.on('new player', onNewPlayer);
     socket.on('disconnect', onClientDisconnect);
     socket.on('movement', onPlayerMovement);
     socket.on('bulletShot', function(data){
-        //console.log("i got to on bullet shot")
-        //console.log(data.bulletX)
+        console.log("i got to on bullet shot")
+        console.log(data.bulletX)
         socket.broadcast.emit('remotePlayerBullet', {id: data.id, x: data.bulletX, y: data.bulletY})
     });
+    socket.on('lobby', onLobby);
+
 
   };
 
+
+
   function onPlayerMovement(data){
       var pack = {}
-      console.log("GAME LOGIC on player movement")
+      // console.log("on player movement")
       pack = {
         id: data.id,
         x: data.x,
@@ -37,15 +39,26 @@ function playerMovements(io) {
       this.broadcast.emit('playerMovement', {id: this.id, x: data.x, y: data.y})
   };
 
+  function onLobby(data){
+    console.log("got onto on lobby")
 
+    lobby.push(data.name)
+      console.log(lobby.length)
+      // console.log(lobby)
+    if(lobby.length === 2){
+      self.broadcast.emit('gameStart', {players: [lobby[0], lobby[1], lobby[2], lobby[3]]});
+      // self.emit('gameStart', {id: "hello"})
+      self.emit('gameStart', {players: [lobby[0], lobby[1], lobby[2], lobby[3]]})
+    }
+  }
   function onClientDisconnect(){
-    console.log("GAME LOGIC i got to onClientDisconnect")
+    console.log("i got to onClientDisconnect")
     delete SOCKETS_LIST[this.id];
     this.broadcast.emit('remove player', {id: this.id});
   };
 
   function onNewPlayer(){
-    console.log("GAME LOGIC i got to onNewPlayer")
+  console.log("i got to onNewPlayer")
     for(var socketID in SOCKETS_LIST){
       if(SOCKETS_LIST.hasOwnProperty(socketID)){
         this.emit('new player', {
@@ -56,11 +69,10 @@ function playerMovements(io) {
 
     this.broadcast.emit('new player', {id: this.id});
   };
-
-  /*server.listen(3000, function(err){
-    console.log("--------listening started---------")
-  }); */ 
-}
+};
+  // server.listen(3000, function(err){
+  //   console.log("--------listening started---------")
+  // }
 
 module.exports = playerMovements;
 // app.use('/', express.static(__dirname));
