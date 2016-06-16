@@ -317,9 +317,17 @@ playerDirectionLeft();
     // if(bullet){
 
     // }
-    socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y})
+    // socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y})
     // socket.on('playerMovement', onPlayerMovement);  
+
+        _.throttle(function(){
+      socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y})
+    }, 100)();
   },
+
+
+
+
   render: function(){
     this.game.debug.text(this.game.time.fps || "---", 20, 70, "#00ff00", "40px Courier");
     // this.game.debug.text(Math.round(this.game.time.totalElapsedSeconds()*1)/1 || "---", 25, 60, "#A9BCF5", "40px Courier");
