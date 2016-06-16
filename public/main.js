@@ -222,8 +222,9 @@ $(function() {
   };
 
   function hostVideo(data){
-    console.log(data.username)
+    
     $(".hostvideo").click(function(){
+      console.log("THIS HAS TO SHOW UP " +data.username);
     $("#iframe").attr('src', 'https://appear.in/'+data.username)
     //$("."+username).append("<td><a href =https://appear.in/"+username+">Join</a></td>")
     })
