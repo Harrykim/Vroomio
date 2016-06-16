@@ -384,10 +384,10 @@ function onRemotePlayerBullet(data) {
 
   // this.remoteBullet.body.velocity.x = 400;
   if (locplaydirection == 'right'){
-    this.remoteBullet.body.velocity.x = 400;
+    this.remoteBullet.body.velocity.x = -400;
   }
   else if (locplaydirection == 'left'){
-    this.remoteBullet.body.velocity.x = -400;
+    this.remoteBullet.body.velocity.x = 400;
   }
 }
 
