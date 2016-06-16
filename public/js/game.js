@@ -371,7 +371,7 @@ function onRemotePlayerBullet(data) {
     data.y - 13,
     'bullet'
     )
-  this.remoteBullet.body.velocity.x = 400;
+  // this.remoteBullet.body.velocity.x = 400;
   // console.log(remoteBullet.body)
   // remoteBullet.x = data.x;
   // remoteBullet.y = data.y + 5;
@@ -381,7 +381,14 @@ function onRemotePlayerBullet(data) {
   SideScroller.game.physics.enable(this.remoteBullet,Phaser.Physics.ARCADE);
   
   this.remoteBullet.physicsBodyType = Phaser.Physics.ARCADE;
-  this.remoteBullet.body.velocity.x = 400;
+
+  // this.remoteBullet.body.velocity.x = 400;
+  if (locplaydirection == 'right'){
+    this.remoteBullet.body.velocity.x = 400;
+  }
+  else if (locplaydirection == 'left'){
+    this.remoteBullet.body.velocity.x = -400;
+  }
 }
 
 function onNewRemotePlayer(data){
@@ -437,7 +444,7 @@ function createRemotePlayer(data){
   remotePlayer.body.gravity.y = 1000;
   remotePlayers[player] = remotePlayer;
   // console.log(remotePlayers[player])
-  remotePlayer.anchor.setTo(0.5,1);
+  remotePlayer.anchor.setTo(1,1);
 }
 
 function onRemovePlayer(data){
