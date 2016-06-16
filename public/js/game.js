@@ -437,6 +437,7 @@ function createRemotePlayer(data){
   remotePlayer.body.gravity.y = 1000;
   remotePlayers[player] = remotePlayer;
   // console.log(remotePlayers[player])
+  remotePlayer.linker.setTo(0.5,1);
 }
 
 function onRemovePlayer(data){
