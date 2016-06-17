@@ -158,8 +158,8 @@ SideScroller.Game.prototype = {
                 }
                 // bullet.reset(localPlayer.x + 85, localPlayer.y + 53);
                 socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y});
-                console.log("this is my bullet's x: "+ bullet.x);
-                console.log("this is my bullet's y: "+ bullet.y);
+                // console.log("this is my bullet's x: "+ bullet.x);
+                // console.log("this is my bullet's y: "+ bullet.y);
                 // socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y})
                 bulletTime = this.game.time.now + 500;
         }
@@ -228,7 +228,7 @@ playerDirectionLeft();
                   //Bullet fire rate
                   console.log("this is my bullet's x: "+ bullet.x);
                   console.log("this is my bullet's y: "+ bullet.y);
-                  socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y});
+                  // socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y});
                   // socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y});
                   bulletTime = this.game.time.now + 500;
               }
@@ -299,7 +299,7 @@ playerDirectionLeft();
                   //Bullet fire rate
                   console.log("this is my bullet's x: "+ bullet.x);
                   console.log("this is my bullet's y: "+ bullet.y);
-                  socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y});
+                  // socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y});
                   // socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y});
                   bulletTime = this.game.time.now + 500;
               }
