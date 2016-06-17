@@ -92,7 +92,7 @@ SideScroller.Game.prototype = {
     // this.backgroundlayer.resizeWorld();
     // if(socket == undefined){
     // }
-    socket = io.connect('http://localhost:3000');
+    socket = io();
     createRemotePlayers()
     createRemoteBullets()
     addSocketHandlers();
