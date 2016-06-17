@@ -92,7 +92,7 @@ SideScroller.Game.prototype = {
     // this.backgroundlayer.resizeWorld();
     // if(socket == undefined){
     // }
-    socket = io();
+    socket = io.connect('http://localhost:3000');
     createRemotePlayers()
     createRemoteBullets()
     addSocketHandlers();
@@ -120,6 +120,7 @@ SideScroller.Game.prototype = {
     localPlayer.animations.add('jumpp', [23,24,25,26,27,28,29,30,31,32]);
     localPlayer.animations.add('runn', [33,34,35,36,37,38,39,40,41,42]);
     localPlayer.animations.add('walkk', [43,44,45,46,47,48,49,50,51,52]);
+    localPlayer.anchor.setTo(.5, 1); 
     specialC = this.game.input.keyboard.addKey(Phaser.KeyCode.TILDE);
     this.fireButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -317,19 +318,18 @@ playerDirectionLeft();
     // if(bullet){
 
     // }
-    // socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y})
-    // socket.on('playerMovement', onPlayerMovement);  
-
-        _.throttle(function(){
+    
+    // throttle movement for performance
+    _.throttle(function(){
       socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y})
     }, 100)();
+
+    // socket.on('playerMovement', onPlayerMovement);  
   },
-
-
-
-
   render: function(){
     this.game.debug.text(this.game.time.fps || "---", 20, 70, "#00ff00", "40px Courier");
+    var rect = new Phaser.Rectangle(   localPlayer.body.x,    localPlayer.body.y,   localPlayer.body.width,    localPlayer.body.height);
+    this.game.debug.geom(rect, 'rgba(255,0,0, 0.5)')
     // this.game.debug.text(Math.round(this.game.time.totalElapsedSeconds()*1)/1 || "---", 25, 60, "#A9BCF5", "40px Courier");
 
     // Sprite debug info
@@ -365,6 +365,8 @@ function onPlayerMovement(data){
     // console.log("this is on player movement" + remotePlayers[data.id])
   remotePlayers[data.id].x = data.x;
   remotePlayers[data.id].y = data.y;
+  // remotePlayers[data.id].time = data.time;
+// console.log(remotePlayers[data.id].time);
     // remotePlayers[data.id].animations.play('walkk', 25, true);
   // }
 }
@@ -379,7 +381,7 @@ function onRemotePlayerBullet(data) {
     data.y - 13,
     'bullet'
     )
-  // this.remoteBullet.body.velocity.x = 400;
+  
   // console.log(remoteBullet.body)
   // remoteBullet.x = data.x;
   // remoteBullet.y = data.y + 5;
@@ -389,19 +391,19 @@ function onRemotePlayerBullet(data) {
   SideScroller.game.physics.enable(this.remoteBullet,Phaser.Physics.ARCADE);
   
   this.remoteBullet.physicsBodyType = Phaser.Physics.ARCADE;
-
-  // this.remoteBullet.body.velocity.x = 400;
-  if (locplaydirection == 'right'){
-    this.remoteBullet.body.velocity.x = -400;
+  if (locplaydirection == 'right') {
+      this.remoteBullet.body.velocity.x = -400;
   }
-  else if (locplaydirection == 'left'){
-    this.remoteBullet.body.velocity.x = 400;
+  else if (locplaydirection == 'left') {
+      this.remoteBullet.body.velocity.x = 400;
   }
+  // this.remoteBullet.body.velocity.x = 1400;
 }
 
 function onNewRemotePlayer(data){
   console.log("i got to onNewRemotePlayer")
   console.log(data.id)
+
   REMOTE_PLAYERS[data.id] = {
     id: data.id
   };
@@ -451,8 +453,8 @@ function createRemotePlayer(data){
   remotePlayer.tint = color;
   remotePlayer.body.gravity.y = 1000;
   remotePlayers[player] = remotePlayer;
-  // console.log(remotePlayers[player])
   remotePlayer.anchor.setTo(1,1);
+  // console.log(remotePlayers[player])
 }
 
 function onRemovePlayer(data){
@@ -473,14 +475,16 @@ function processHandler(bullet, object){
 
 function playerDirectionLeft() {
     locplaydirection = "left";
-    localPlayer.anchor.setTo(.5, 1); 
-    localPlayer.scale.x = -1;
+    // localPlayer.anchor.setTo(.5, 1); 
+    localPlayer.scale.x = Math.abs(localPlayer.scale.x) * -1;
+    localPlayer.anchor.x = 1;
 }
 
 function playerDirectionRight() {
     locplaydirection = "right";
-    localPlayer.anchor.setTo(.5, 1); 
-    localPlayer.scale.x = 1;
+    // localPlayer.anchor.setTo(.5, 1); 
+    localPlayer.scale.x = Math.abs(localPlayer.scale.x)
+    localPlayer.anchor.x = 1;
 }
 
 function fasterFunc(){
