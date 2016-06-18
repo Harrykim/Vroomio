@@ -114,6 +114,13 @@ ul {
   font-size: 200%;
 }
 
+.login.page .title2{
+  font-size: 400%;
+  font-family: Times;
+  font-weight: 100;
+  color: #fff;
+}
+
 .login.page .usernameInput {
   font-size: 200%;
   letter-spacing: 3px;
