@@ -4,7 +4,6 @@ var express = require('express');
 var mongoose = require('mongoose');
 var app = express();
 var server = require('http').createServer(app);
-// var io = require('../..')(server)
 var io = require('socket.io')(server); 
 var port = process.env.PORT || 3000;
 var users = [];
@@ -59,7 +58,6 @@ app.use(function(req, res, next)
 // Chatroom
 
 var numUsers = 0;
-// var USERS = {};
 
 function getUsers()
 {
@@ -84,12 +82,8 @@ io.on('connection', function (socket) {
     typing: false
   };
 
-  // console.log(Point.find({}));
-  // console.log('User connected. %s', socket.id);
-  // inspect(io, 1);
-  var addedUser = false;
-  // console.log(socket.id)
 
+  var addedUser = false;
 
     socket.emit('check',{
       users: users
@@ -98,8 +92,6 @@ io.on('connection', function (socket) {
   // when the client emits 'new message', this listens and executes
   socket.on('new message', function (data) {
     // we tell the client to execute 'new message'
-    // console.log(socket.username);
-    // console.log(socket.state.username);
       socket.broadcast.emit('new message', {
       username: socket.state.username,
       message: data
@@ -109,30 +101,15 @@ io.on('connection', function (socket) {
   socket.on('add join event', function (data)
   { 
     socket.state.hosting = true;
-    // console.log(data);
     data.hosting = true;
-    // console.log(data);
-    // for (var key in tHash){
-    //   if (key == "name") doSomething();
-    // }
-  
-
     io.emit('add join event others', data);
   });
 
   socket.on('cancel video event', function (data){
-    console.log(data);
-
-    // socket.state.hosting = false
+    socket.state.hosting = false
     data.hosting = false
     io.emit ('cancel join event others', data);
   })
-
-  // socket.on('add user', function (data)
-  // {
-  //   socket.state.username = socket.username;
-  //   io.emit('online', data);
-  // });
 
   // when the client emits 'add user', this listens and executes
   socket.on('add user', function (username) {
@@ -174,8 +151,7 @@ io.on('connection', function (socket) {
       numUsers: numUsers,
       users: users
     });
-    // console.log(socket.username);  
-    // console.log(socket.state.username);
+
     socket.emit('online', {
     username: socket.state.username,
     numUsers: numUsers,
@@ -184,17 +160,12 @@ io.on('connection', function (socket) {
     allusers: getUsers()
     });
 
-     // console.log(getUsers());
-
-
   });
 
 
   // when the client emits 'typing', we broadcast it to others
   socket.on('typing', function () {
-    // console.log(socket.username);
     socket.broadcast.emit('typing', {
-
       username: socket.state.username
     });
   });
@@ -212,15 +183,9 @@ io.on('connection', function (socket) {
       --numUsers;
       // delete a user
       var index = users.indexOf(socket.username);
-      // console.log("BEFORE SPLICE "+ users);
       users.splice(index, 1);
-      // console.log("AFTER SPLICE "+ users);
-      // users.delete();
 
       // echo globally that this client has left
-      // console.log("THI IS USERNMAE "+ username);
-      // console.log("THIS IS SOCKET USERNAME "+socket.username);
-      console.log("THIS IS SECOND NAME "+ socket.state.username);
       socket.broadcast.emit('user left', {
         username: socket.state.username,
         numUsers: numUsers,
@@ -231,17 +196,9 @@ io.on('connection', function (socket) {
   });
 
   socket.on('update hosting',function(data){
-    // console.log("UPDATE HOSTING " +data.users);
     users = data.users;
-    // console.log("UPDATE HOSTING" + users);
   });
 
-  socket.on('cancelimg',function(){
-    socket.emit('cancelimg', {
-      username: socket.state.username,
-      users: users
-    });
-  });
 });
 
 // console.log(playerMovement);

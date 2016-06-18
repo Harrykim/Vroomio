@@ -190,29 +190,19 @@ $(function() {
         users = data.users;
         $('.online').empty();
         for (var i = 0; i < (data.users).length; i++) {
-          //console.log(data)
             var order = i + 1
-            // console.log(data.users[i])
             if(data.users[i].hosting){
                 $('.online').append("<tr class='"+ data.users[i].username +"'><td>" + order + " </td><td>"+ data.users[i].username +"</td><td><p type ='button' class = 'joinchat' data-toggle='modal' data-target='#myModal'>Join</p></td></tr>" );
-                
                 $("#iframe").attr('src', 'https://appear.in/'+data.users[i].username)
-   
-                // $('.online').append("<tr class='" + data.users[i].username + "'><td>" + order + "&nbsp &nbsp </td><td>" + data.users[i].username +"&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp"+"<a href =https://appear.in/"+ data.users[i].username+ ">Join</a></td></tr>");
             } else {
                 $('.online').append("<tr class='" + data.users[i].username + "'><td>" + order + "&nbsp &nbsp </td><td>" + data.users[i].username + "</td><td></td></tr>");
             };
-
-
-
         }
     };
 
 
     // remove users 
     function removeUsers(data) {
-        // console.log(data.users)
-            // console.log("i hit remove users")
         $("." + data.username).remove();
     };
 
@@ -220,9 +210,7 @@ $(function() {
 
         $(".hostvideo").click(function(e) {
             $("#iframe").attr('src', 'https://appear.in/' + data.username)
-            // console.log(data);
             data.users = users;   
-            // console.log(data);
             socket.emit('add join event', {
                 username: data.username,
                 numUsers: data.numUsers,
@@ -232,22 +220,15 @@ $(function() {
             });  
             onlineUsers(data);
             $(".thankyou").replaceWith("<iframe src='https://appear.in/your-room-name' id ='iframe' width='640' height='480' frameborder='0'></img>")
-            // $(this).removeClass("hostvideo").addClass("cancelvideo")
             $(this).toggleClass("cancelvideo")
             $(".cancelvideo").html('Cancel Video')
             cancelVideo(data);
             e.preventDefault();
-
-
-            // console.log('click event worked');
         });
     }
 
     function cancelVideo(data){
-        console.log("I'M INSIDE CANCEL VIDEO")
-
          $(".cancelvideo").click(function(e) {
-            console.log(data);
             socket.emit('cancel video event', {
                 username: data.username,
                 numUsers: data.numUsers,
@@ -255,42 +236,24 @@ $(function() {
                 users: data.users,
                 allusers: data.allusers
             }); 
-
             onlineUsers(data);
-            // $(this).removeClass("cancelvideo").addClass("hostvideo")
-             //$(this).toggleClass("hostvideo")
              $(".hostvideo").html('Host video')
              $("#iframe").replaceWith("<img class= 'thankyou' src='http://www.planwallpaper.com/static/images/thank-you6.jpg' style='width:640px;height:480px'></img>")
-            // console.log("cancel event "+ data.username )
-
-
-             // $('.'+data.username+" td").eq(2).html(" ");            //<img src="wrongname.gif" alt="HTML5 Icon" style="width:128px;height:128px;">//$(this).switchClass(".cancelvideo", ".hostvideo")
-        // $(".cancelvideo").addClass("hostvideo");
-        // $(".cancelvideo").removeClass("cancelvideo")
-        // $(".hostvideo").html('Host video')
-           // hostVideo();
             hostVideo(data);
             e.preventDefault();
        });         
     }
 
     socket.on('add join event others', function(data) {
-        // console.log('add join event', arguments);
-        // console.log(data);
         for(i = 0; i < data.users.length; i ++){
             if(data.users[i].username === data.username){
                 data.users[i].hosting = true;
             };
         };
-        console.log(data.users);
         socket.emit('update hosting',{
             users: data.users
         });
-        // console.log(data);
         onlineUsers(data);
-        // $('.' + data.username).append("<td><p type ='button' class = 'joinchat' data-toggle='modal' data-target='#myModal'>Join</p></td>")
-        // $('.'+data.username+" td").eq(2).html("<p type ='button' class = 'joinchat' data-toggle='modal' data-target='#myModal'>Join</p>");
-        // $("."+data.username+" td").eq(1).html(data.username + "&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp"+"<a href =https://appear.in/"+data.username+">Join</a>")
     });
 
 
@@ -302,14 +265,10 @@ $(function() {
                 data.users[i].hosting = false;
             };
         };
-        // console.log(data);
         socket.emit('update hosting',{
             users: data.users
         });
         onlineUsers(data);
-        // $('.'+data.username+" td").eq(2).html("");
-       
-
     })
     // Keyboard events
 
@@ -325,9 +284,6 @@ $(function() {
                 socket.emit('stop typing');
                 typing = false;
             } else {
-                // socket.on('check', function(data){
-                //   setUsername(data);
-                // });
                 setUsername();
             }
         }
@@ -353,10 +309,6 @@ $(function() {
        $("#iframe").attr('src', 'https://appear.in/'+username)
      })
 
-    $(".cancelvideo").click(function(){
-        // console.log("random one")
-      socket.emit('cancelimg');  
-    })
     // Focus input when clicking anywhere on login page
     $loginPage.click(function() {
         $currentInput.focus();
@@ -387,12 +339,9 @@ $(function() {
 
     // Whenever the server emits 'user joined', log it in the chat body
     socket.on('user joined', function(data) {
-        // console.log('User Joined', arguments);
         log(data.username + ' joined');
         addParticipantsMessage(data);
-        // console.log(data);
         onlineUsers(data);
-        // hostVideo(data);
     });
 
     // Whenever the server emits 'user left', log it in the chat body
@@ -400,7 +349,6 @@ $(function() {
         log(data.username + ' left');
         addParticipantsMessage(data);
         removeChatTyping(data);
-        // removeUsers(data);
         onlineUsers(data);
 
     });
@@ -416,9 +364,6 @@ $(function() {
     });
 
     socket.on('online', function(data) {
-        // console.log(data);
-        // alert(data);
-        // log('123');
         onlineUsers(data);
     });
 
@@ -431,8 +376,6 @@ $(function() {
         $chatPage.show();
         $loginPage.off('click');
         $currentInput = $inputMessage.focus();
-        // console.log(data);
-        // data.users = users
         hostVideo(data);
         cancelVideo(data);
         // Tell the server your username
@@ -443,19 +386,4 @@ $(function() {
         $('.form h3').text("Another user has this name already please use a different username")
 
     });
-
-    socket.on('cancelimg', function(data){
-        console.log(data);
-        cancelVideo(data);
-    }); 
-
-
-
-
-    // socket.on('check'),function(data){
-    //   users = data.users
-    // };
-
-
-
 });
