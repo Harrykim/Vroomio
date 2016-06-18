@@ -181,8 +181,14 @@ io.on('connection', function (socket) {
   socket.on('disconnect', function () {
     if (addedUser) {
       --numUsers;
+
+      var index;
+      for(i=0; i< users.length;i++){
+        if(users[i].username === socket.state.username){
+          index = i 
+        };
+      };
       // delete a user
-      var index = users.indexOf(socket.username);
       users.splice(index, 1);
 
       // echo globally that this client has left
