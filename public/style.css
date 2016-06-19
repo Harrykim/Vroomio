@@ -45,6 +45,10 @@ ul {
 }
 
 /* Pages */
+
+.modal-card {
+  height: 580px;
+}
 .modal-card-body {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
