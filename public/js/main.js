@@ -1,5 +1,5 @@
 var SideScroller = SideScroller || {};
-SideScroller.game = new Phaser.Game(770, 700, Phaser.CANVAS, 'gameDiv');
+SideScroller.game = new Phaser.Game(770, 772, Phaser.CANVAS, 'gameDiv');
 SideScroller.game.state.add('Boot', SideScroller.Boot);
 SideScroller.game.state.add('Preload', SideScroller.Preload);
 SideScroller.game.state.add('Game', SideScroller.Game);

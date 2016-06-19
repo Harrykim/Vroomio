@@ -20,16 +20,24 @@ html, input {
     sans-serif;
 }
 
-html, body {
+html, body,div {
   height: 100%;
-  margin-bottom: 1px;
+  margin: 0px;
   padding: 0;
 
+}
+
+canvas {
+  margin:0px;
+  padding: 0px;
+  border-top: 2px solid black; border-bottom:2px solid black;"
 }
 /*
 body{
   display: flex;
 }*/
+
+
 
 ul {
   list-style: none;
@@ -227,8 +235,14 @@ ul {
   width: 100%;
   border-top: 2px solid black;
 }
+/*table*/
 
 
-.test1{
-  
+
+#gameDiv{
+  "width:58.61%; 
+  height:100%;
+  display: inline-block; 
+  float: left; vertical-align:top; margin:0px; 
+  /*border-top: 2px solid black; border-bottom:2px solid black;"*/
 }
