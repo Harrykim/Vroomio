@@ -192,8 +192,9 @@ $(function() {
         for (var i = 0; i < (data.users).length; i++) {
             var order = i + 1
             if(data.users[i].hosting){
-                $('.online').append("<tr class='"+ data.users[i].username +"'><td>" + order + " </td><td>"+ data.users[i].username +"</td><td><p type ='button' class = 'joinchat' data-toggle='modal' data-target='#myModal'>Join</p></td></tr>" );
+                $('.online').append("<tr class='onlineusers "+ data.users[i].username +"'><td>" + order + " </td><td>"+ data.users[i].username +"</td><td><a class = 'button is-info modal-button joinchat'  data-target='.modal .is-active'>Join</p></td></tr>" );
                 $("#iframe").attr('src', 'https://appear.in/'+data.users[i].username)
+ 
             } else {
                 $('.online').append("<tr class='" + data.users[i].username + "'><td>" + order + "&nbsp &nbsp </td><td>" + data.users[i].username + "</td><td></td></tr>");
             };
@@ -219,11 +220,16 @@ $(function() {
                 allusers: data.allusers
             });  
             onlineUsers(data);
-            $(".thankyou").replaceWith("<iframe src='https://appear.in/your-room-name' id ='iframe' width='640' height='480' frameborder='0'></img>")
+            $(".modal").addClass("is-active");
+            $(".modal-body").show();
+            $(".modal-body2").hide();
+            //$(".thankyou").replaceWith("<iframe src='https://appear.in/your-room-name' id ='iframe' width='640' height='480' frameborder='0'></img>")
             $(this).toggleClass("cancelvideo")
             $(".cancelvideo").html('Cancel Video')
             cancelVideo(data);
+            joinVideoChat(data);
             e.preventDefault();
+            
         });
     }
 
@@ -237,11 +243,30 @@ $(function() {
                 allusers: data.allusers
             }); 
             onlineUsers(data);
-             $(".hostvideo").html('Host video')
-             $("#iframe").replaceWith("<img class= 'thankyou' src='http://www.planwallpaper.com/static/images/thank-you6.jpg' style='width:640px;height:480px'></img>")
+            $(".hostvideo").html('Host video')
+            $(".modal-body").hide();
+            $(".modal-body2").show();
             hostVideo(data);
+            joinVideoChat(data);
             e.preventDefault();
+                 
        });         
+
+
+    }
+
+    function joinVideoChat(data){
+        console.log("im in join video chat")
+        $(".online").on('click', "tr", function(){
+            console.log("IM IN JOIN CHAT")
+            // $("#iframe").attr('src', 'https://appear.in/'+username);
+            $(".modal-body").show();
+            $(".modal-body2").hide();
+            $(".modal").addClass("is-active");
+        });
+    
+
+
     }
 
     socket.on('add join event others', function(data) {
@@ -304,10 +329,10 @@ $(function() {
 
     // Click events
     //change the appear in url to the person hosting it
-
-    $(".joinchat").click(function(){
-       $("#iframe").attr('src', 'https://appear.in/'+username)
-     })
+    $(".modal").click(function(){
+        $(".modal").toggleClass("is-active");
+        joinVideoChat();
+    });
 
     // Focus input when clicking anywhere on login page
     $loginPage.click(function() {
@@ -325,7 +350,7 @@ $(function() {
     socket.on('login', function(data) {
         connected = true;
         // Display the welcome message
-        var message = "This is for our final project";
+        var message = "Vroomio's Chat";
         log(message, {
             prepend: true
         });
@@ -375,9 +400,11 @@ $(function() {
         $pages.fadeIn();
         $chatPage.show();
         $loginPage.off('click');
+        $(".nav").removeClass('hide');
         $currentInput = $inputMessage.focus();
         hostVideo(data);
         cancelVideo(data);
+        joinVideoChat(data)
         // Tell the server your username
     });
 

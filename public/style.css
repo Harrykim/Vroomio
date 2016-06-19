@@ -22,9 +22,14 @@ html, input {
 
 html, body {
   height: 100%;
-  margin: 0;
+  margin-bottom: 1px;
   padding: 0;
+
 }
+/*
+body{
+  display: flex;
+}*/
 
 ul {
   list-style: none;
@@ -32,9 +37,16 @@ ul {
 }
 
 /* Pages */
-
+.modal-card-body {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  overflow: auto;
+  padding: 0px;
+}
 .pages {
-  height: 100%;
+  height: 94%;
   margin: 0;
   padding: 0;
   display:none;
@@ -67,12 +79,16 @@ ul {
     width: 48em;
 }
 
+.hide{
+  display: none;
+}
+
 .joinchat{
   color: blue;
   cursor: pointer;
 }
 .hostvideo {
-   border-top: 1px solid #020405;
+/*   border-top: 1px solid #020405;
    background: #040708;
    background: -webkit-gradient(linear, left top, left bottom, from(#07090a), to(#040708));
    background: -webkit-linear-gradient(top, #07090a, #040708);
@@ -89,16 +105,18 @@ ul {
    font-family: Helvetica, Arial, Sans-Serif;
    text-decoration: none;
    vertical-align: middle;
-   position: absolute;
+   position: absolute;*/
+   border: 2px solid black;
    bottom: 50%;
    width: 100%;
+   position: absolute;
    }
-.hostvideo:active {
+/*.hostvideo:active {
    border-top-color: #000000;
    background: #000000;
   position: absolute;
   bottom: 50%;
-   }
+   }*/
 
 .login.page .form .usernameInput {
   background-color: transparent;
@@ -116,7 +134,7 @@ ul {
 
 .login.page .title2{
   font-size: 400%;
-  font-family: Times;
+  font-family: Helvetica;
   font-weight: 100;
   color: #fff;
 }
@@ -135,7 +153,22 @@ ul {
 
 .chat.page {
   display: none;
-  width: 25%;
+  width: 23.3%;
+  margin:0;
+}
+
+/* nav */
+.nav{
+  background-color:#fce473;
+  justify-content: center;
+}
+
+.nav-item {
+  color: #000;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: 200%;
+  letter-spacing: 3px;
+  align-self: center;
 }
 
 /* Font */
@@ -151,7 +184,7 @@ ul {
 .log {
   color: gray;
   font-size: 70%;
-  margin: 5px;
+  /*margin: 5px;*/
   text-align: center;
 }
 
@@ -183,7 +216,7 @@ ul {
 /* Input */
 
 .inputMessage {
-  border: 10px solid #000;
+  /*border: 5px solid #000;*/
   bottom: 0;
   height: 60px;
   left: 0;
@@ -192,6 +225,7 @@ ul {
   position: absolute;
   right: 0;
   width: 100%;
+  border-top: 2px solid black;
 }
 
 
