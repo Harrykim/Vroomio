@@ -1,3 +1,4 @@
+
 var SideScroller = SideScroller || {};
 SideScroller.Boot = function(){};
 

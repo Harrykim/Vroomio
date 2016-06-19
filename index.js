@@ -114,10 +114,27 @@ io.on('connection', function (socket) {
   // when the client emits 'add user', this listens and executes
   socket.on('add user', function (username) {
     if (addedUser) return;
-    if (users.indexOf(username)!= -1){
-      socket.emit('invalid user', username);
-      return;
-    }
+    // if (users.indexOf(username)!= -1){
+    //   socket.emit('invalid user', username);
+    //   return;
+    console.log(users);
+    console.log(username);
+    var index2;
+    for(i=0; i< users.length;i++){
+      if(users[i].username === username){
+        // index2 = i ;
+        socket.emit('invalid user', username);
+        return;
+      } 
+      // else {
+      //   index2 = -1;
+        
+      //   }
+      };
+    // if (index2 != -1){
+    //   socket.emit('invalid user', username);
+    // return;
+    // }
  
 
     // we store the username in the socket session for this client
