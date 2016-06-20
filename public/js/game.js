@@ -30,7 +30,7 @@ SideScroller.Game.prototype = {
   },
   create: function() {
     this.bg = this.add.audio('bg');
-    this.bg.play('',0,0.3,true);
+    this.bg.play('',0,0.25,true);
     this.fire = this.add.audio('fire');
     this.jump = this.add.audio('jump');
     this.getting_hit = this.add.audio('getting_hit');
@@ -131,7 +131,7 @@ SideScroller.Game.prototype = {
               socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y, direction: locplaydirection});
               bulletTime = this.game.time.now + 500;
               this.fire.play();
-              this.fire.volume = 0.2;
+              this.fire.volume = 0.25;
           }
       }
 } 
