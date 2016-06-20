@@ -19,23 +19,19 @@ function playerMovements(io) {
     socket.on('bulletShot', function(data){
         console.log("i got to on bullet shot")
         console.log(data.bulletX)
-        socket.broadcast.emit('remotePlayerBullet', {id: data.id, x: data.bulletX, y: data.bulletY})
+        socket.broadcast.emit('remotePlayerBullet', {id: data.id, x: data.bulletX, y: data.bulletY, direction: data.direction})
     });
     socket.on('lobby', onLobby);
-
-
-  };
-
-
+};
 
   function onPlayerMovement(data){
-      var pack = {}
+      // var pack = {}
       // console.log("on player movement")
-      pack = {
-        id: data.id,
-        x: data.x,
-        y: data.y
-      }
+      // pack = {
+      //   id: data.id,
+      //   x: data.x,
+      //   y: data.y
+      // }
       this.broadcast.emit('playerMovement', {id: this.id, x: data.x, y: data.y})
   };
 
@@ -54,6 +50,7 @@ function playerMovements(io) {
   function onClientDisconnect(){
     console.log("i got to onClientDisconnect")
     delete SOCKETS_LIST[this.id];
+    delete players[this.id];
     this.broadcast.emit('remove player', {id: this.id});
   };
 

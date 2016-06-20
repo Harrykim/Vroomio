@@ -56,7 +56,7 @@ SideScroller.Game.prototype = {
     bullets.setAll('checkWorldBounds', true);
     socket.on('playerMovement', onPlayerMovement);
     localPlayer.body.gravity.y = 1000;
-    // remotePlayers.animations.add('walkk', 25, true); 
+
     localPlayer.animations.add('idlee', [0,1,2]);
     localPlayer.animations.add('attackk', [3,4,5,6,7,8,9,10,11,12]);
     localPlayer.animations.add('jumpattackk', [13,14,15,16,17,18,19,20,21,22]);
@@ -114,7 +114,7 @@ SideScroller.Game.prototype = {
                   bullet.body.velocity.x = 400;
                       socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
               }
-              socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y});
+              socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y, direction: locplaydirection});
               bulletTime = this.game.time.now + 500;
           }
       }
@@ -122,61 +122,54 @@ SideScroller.Game.prototype = {
     
 if(!bulletHitPlayer) {
     if(this.cursors.left.isDown && specialC.isDown) {
+        locplaydirection = "left";
         playerDirectionLeft();
         localPlayer.body.velocity.x = -300;
-
         localPlayer.animations.play('runn', 25, true);
-            socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
         if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
             localPlayer.body.velocity.y = -690;
             localPlayer.animations.play('jumpp', 25, true);
-                socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
         }
     }
     else if(this.cursors.left.isDown) {
+        locplaydirection = "left";
         localPlayer.body.velocity.x = -250;
         playerDirectionLeft();
-            socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
         if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
             localPlayer.body.velocity.y = -580;
             localPlayer.animations.play('jumpp', 25, true);
-                socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
         }
         else {
             localPlayer.animations.play('walkk', 25, true);
         }
     }  
     else if(this.cursors.right.isDown && specialC.isDown) {
+        locplaydirection = "right";
         playerDirectionRight();
         localPlayer.body.velocity.x = 300;
-            socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
         localPlayer.animations.play('runn', 25, true);
         if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
             localPlayer.body.velocity.y = -690;
             localPlayer.animations.play('jumpp', 25, true);
-                socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
         } 
     }
     else if(this.cursors.right.isDown) {
+        locplaydirection = "right";
         playerDirectionRight();
         localPlayer.body.velocity.x = 250;
         localPlayer.animations.play('walkk', 25, true);
-            socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
         if (this.cursors.up.isDown && localPlayer.body.blocked.down){
             localPlayer.body.velocity.y = -580;
             localPlayer.animations.play('jumpp', 25, true);
-                socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
         }   
     } 
     else if(this.cursors.up.isDown && specialC.isDown && localPlayer.body.blocked.down) {
         localPlayer.body.velocity.y = -690;
         localPlayer.animations.play('jumpattackk', 25, true);      
-            socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
     }    
     else if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
         localPlayer.body.velocity.y = -580;
         localPlayer.animations.play('jumpp', 25, true);
-            socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
     }
     else if(this.fireButton.isDown) {
         localPlayer.animations.play('attackk', 25, true);
@@ -187,6 +180,7 @@ if(!bulletHitPlayer) {
 } 
 else {
     if(this.cursors.left.isDown && specialC.isDown) {
+        locplaydirection = "left";
         playerDirectionLeft();
         localPlayer.body.velocity.x = -300*afterHitSpeed;
         localPlayer.animations.play('runn', 25, true);
@@ -196,6 +190,7 @@ else {
         }
     }
     else if(this.cursors.left.isDown) {
+        locplaydirection = "left";
         playerDirectionLeft();
         localPlayer.body.velocity.x = -250*afterHitSpeed;
             if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
@@ -207,6 +202,7 @@ else {
             }
     }  
     else if(this.cursors.right.isDown && specialC.isDown) {
+        locplaydirection = "right";
         playerDirectionRight();
         localPlayer.body.velocity.x = 300*afterHitSpeed;
         localPlayer.animations.play('runn', 25, true);
@@ -216,6 +212,7 @@ else {
             } 
     }
     else if(this.cursors.right.isDown) {
+        locplaydirection = "right";
         playerDirectionRight();
         localPlayer.body.velocity.x = 250*afterHitSpeed;
         localPlayer.animations.play('walkk', 25, true);
@@ -256,14 +253,14 @@ else {
 
   },
   render: function(){
-    this.game.debug.text(Math.round(this.game.time.totalElapsedSeconds()*1)/1 || "---", 25, 60, "#A9BCF5", "40px Courier");
+    // this.game.debug.text(Math.round(this.game.time.totalElapsedSeconds()*1)/1 || "---", 25, 60, "#A9BCF5", "40px Courier");
     // this.game.debug.text(Math.round("Boost: " + boostAmt || "---", 25, 160, "#A9BCF5", "40px Courier");
       
   }
 
 };
 function addSocketHandlers(){
-  console.log("i got to addSocketHandlers")
+  // console.log("i got to addSocketHandlers")
   socket.on('connect', onSocketConnect);
   socket.on('new player', onNewRemotePlayer);
   socket.on('remove player', onRemovePlayer);
@@ -273,7 +270,7 @@ function addSocketHandlers(){
 };
 
 function onSocketConnect(){
-  console.log("i got to onSocketConnect")
+  // console.log("i got to onSocketConnect")
   socket.emit('new player')
 };
 
@@ -305,14 +302,24 @@ function onPlayerMovement(data)
   // }
 }
 
+function playerDirectionLeft() {
+    localPlayer.anchor.setTo(.5, 1); 
+    localPlayer.scale.x = -1;
+}
+
+function playerDirectionRight() {
+    localPlayer.anchor.setTo(.5, 1);
+    localPlayer.scale.x = 1;
+}
+
 function onRemotePlayerBullet(data) {
-  console.log("i got to on remote player bullet")
-  console.log("remote player's bullet x: " + data.x);
-  console.log(data.y);
+  // console.log("i got to on remote player bullet")
+  // console.log("remote player's bullet x: " + data.x);
+  // console.log(data.y);
 
   this.remoteBullet = remoteBullets.create(
-    data.x,
-    data.y + 5,
+    data.x - 47,
+    data.y - 15,
     'bullet'
     )
   // this.remoteBullet.body.velocity.x = 400;
@@ -325,19 +332,29 @@ function onRemotePlayerBullet(data) {
   SideScroller.game.physics.enable(this.remoteBullet,Phaser.Physics.ARCADE);
   
   this.remoteBullet.physicsBodyType = Phaser.Physics.ARCADE;
-  this.remoteBullet.body.velocity.x = 400;
+  // this.remoteBullet.body.velocity.x = 400;
+  if(data.direction === 'right') {
+      this.remoteBullet.body.velocity.x = 400;
+    // remoteBullet.reset(localPlayer.x - 139, localPlayer.y + -149);
+  }
+  else if(data.direction === 'left') {
+      this.remoteBullet.body.velocity.x = -400;
+    // remoteBullet.reset(localPlayer.x - 139, localPlayer.y + -149);
+  }
+
+
 }
 
 function onNewRemotePlayer(data){
-  console.log("i got to onNewRemotePlayer")
-  console.log(data.id)
+  // console.log("i got to onNewRemotePlayer")
+  // console.log(data.id)
   REMOTE_PLAYERS[data.id] = {
     id: data.id
   };
   remotePlayers[data.id] = {
     id: data.id
   };
-  console.log(socket.id)
+  // console.log(socket.id)
   if(data.id != "/#" + socket.id){
     createRemotePlayer(data);
     createRemoteBullets()
@@ -361,7 +378,7 @@ function createRemotePlayer(data){
   var player = data.id;
   var remotePlayer;
 
-  console.log("i got to create remote player")
+  // console.log("i got to create remote player")
 
   remotePlayer = remotePlayers.create(
     100,
@@ -380,19 +397,21 @@ function createRemotePlayer(data){
   remotePlayer.alpha = 0.7;
   remotePlayer.tint = color;
   remotePlayer.body.gravity.y = 1000;
-  remotePlayer.anchor.setTo(0.5, 1);
+  remotePlayer.anchor.setTo(1, 1);
   // console.log(remotePlayers[player])
-  remotePlayers.add(remotePlayer)
+  remotePlayers.add(remotePlayer);
+  remotePlayer.animations.add('idlee', [0,1,2]); 
+  remotePlayer.animations.play('idlee', 5, true);
 }
 
 function onRemovePlayer(data){
-  console.log("i got to onRemovePlayer")
-  console.log(remotePlayers.children)
+  // console.log("i got to onRemovePlayer")
+  // console.log(remotePlayers.children)
   for(var i = 0; i < remotePlayers.children.length; i++){
     if (remotePlayers.children[i].id == data.id) {
         remotePlayers.children[i].kill();
         // remotePlayers.children.splice(1, i)
-        console.log(remotePlayers.children.length)
+        // console.log(remotePlayers.children.length)
         // console.log(remotePlayers.children.length)
     }
   }
@@ -405,25 +424,13 @@ function onRemovePlayer(data){
 }
 
 function processHandler(bullet, object){
-  console.log("i got to process handler")
-  console.log(bullet)
-  console.log(object)
+  // console.log("i got to process handler")
+  // console.log(bullet)
+  // console.log(object)
   object.kill();
   bulletHitPlayer = true;
   setTimeout(fasterFunc, 3000);
-  console.log(bulletHitPlayer);
-}
-
-function playerDirectionLeft() {
-    locplaydirection = "left";
-    localPlayer.anchor.setTo(.5, 1); 
-    localPlayer.scale.x = -1;
-}
-
-function playerDirectionRight() {
-    locplaydirection = "right";
-    localPlayer.anchor.setTo(.5, 1); 
-    localPlayer.scale.x = 1;
+  // console.log(bulletHitPlayer);
 }
 
 function fasterFunc(){
@@ -431,14 +438,14 @@ function fasterFunc(){
 }
 
 function processHandler2(bullet, object){
-  console.log("i got to process handler")
-  console.log(bullet)
-  console.log(object)
+  // console.log("i got to process handler")
+  // console.log(bullet)
+  // console.log(object)
   bullet.kill();
 }
 
 function collisionHandler(bullet1, object){
-  console.log("i got to collision handler!")
+  // console.log("i got to collision handler!")
   bullet1.kill();
 }
 
