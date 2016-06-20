@@ -97,7 +97,7 @@ SideScroller.Game.prototype = {
     this.game.physics.arcade.collide(bullets, this.blockedlayer, collisionHandler, null, this);
     this.game.physics.arcade.collide(remoteBullets, localPlayer, processHandler, null, this);
     this.game.physics.arcade.overlap(bullets, remotePlayers, processHandler2, null, this);
-    
+    this.game.physics.arcade.overlap(remoteBullets, remotePlayers, processHandler2, null, this);
 
     if(this.fireButton.isDown) {
       localPlayer.animations.play('attackk', 25, true);
