@@ -10,8 +10,8 @@ SideScroller.Preload.prototype = {
     this.preloadbar.scale.setTo(3);
     this.load.setPreloadSprite(this.preloadbar);
 
-    this.load.tilemap('level1', 'assets/tilemaps/map10.json', null, Phaser.Tilemap.TILED_JSON);
-    this.load.image('gameTiles', 'assets/images/orig_tiles_spritesheet2.png');
+    this.load.tilemap('level1', 'assets/tilemaps/fighting2.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.image('gameTiles', 'assets/images/orig_tiles_spritesheet.png');
     this.load.spritesheet('player', 'assets/images/enemymoving.png', 68, 96);
     // this.load.image('playerDuck', 'assets/images/player_duck.png');
     // this.load.image('playerDead', 'assets/images/player_dead.png');

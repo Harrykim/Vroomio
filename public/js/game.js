@@ -27,7 +27,7 @@ SideScroller.Game.prototype = {
     this.map = this.game.add.tilemap('level1');
     this.map.addTilesetImage('orig_tiles_spritesheet', 'gameTiles')
     // this.backgroundlayer = this.map.createLayer('backgroundLayer');
-    this.game.world.setBounds(0,0,7700,1540);
+    this.game.world.setBounds(0,0,3600,1900);
 
     this.blockedlayer = this.map.createLayer('blockedLayer');
     this.map.setCollisionBetween(1, 100000, true, 'blockedLayer');
