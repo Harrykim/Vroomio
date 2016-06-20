@@ -46,7 +46,9 @@ th{
   font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
-
+td{
+  font-family: "Futura", Arial;
+}
 ul {
   list-style: none;
   word-wrap: break-word;
@@ -181,8 +183,12 @@ ul {
 /* nav */
 .nav{
   background-color:#fce473;
-  justify-content: center;
+  position:relative;
+  /*justify-content: center;*/
   height: 7%;
+}
+.nav-item.navlogo{
+  float:right;
 }
 
 .nav-item {
@@ -194,13 +200,6 @@ ul {
   /*align-self: center;*/
 }
 
-.nav-item#navlogo{
-  color: #000;
-  font-weight: bold;
-  font-size: 300%;
-  letter-spacing: 3px;
-  /*align-self: center;*/
-}
 
 
 /*info modal*/
@@ -237,11 +236,12 @@ ul {
 
 
 /* Font */
-
+.fa.fa-info-circle.fa-lg.modal-button{
+  font-size: 100%;
+}
 .messages {
   font-size: 150%;
   font-family: "Futura", Arial;
-
 }
 
 .inputMessage {
@@ -255,6 +255,10 @@ ul {
   /*margin: 5px;*/
   text-align: center;
 }
+
+ .nav-item > i.fa.fa-info-circle.fa-lg.modal-button {
+    float: right !important;
+  }
 
 /* Messages */
 
@@ -271,8 +275,8 @@ ul {
 }
 
 .message.typing .messageBody {
-  color: gray;
-  font-family: "Monaco", Arial;
+  color: black;
+  font-family: "Futura", Arial;
 }
 
 .username {
@@ -296,6 +300,7 @@ ul {
   right: 0;
   width: 100%;
   border-top: 2px solid black;
+    font-family: "Futura", Arial;
 }
 /*table*/
 .button.is-danger {
