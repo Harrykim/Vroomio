@@ -20,10 +20,13 @@
 
   <div class="pages">
     <nav class="nav hide">
-      <div class="nav-center">
+      <div class="nav-center navbrand">
         <h2 class="nav-item" >
-          VROOMIO 
+          Vroomio
        </h2>
+      </div>
+      <div class="nav-item" id ="navlogo">
+        <i class="fa fa-info-circle fa-lg modal-button" data-target=".infomodal" aria-hidden="true"></i>
       </div>
     </nav>
 
@@ -43,7 +46,7 @@
 
       </div>
 
-            
+<!-- host video modal      -->
 
 <div class="modal">
   <div class="modal-background"></div>
@@ -67,11 +70,31 @@
 </div>
 
 
+<!-- info modal -->
+<div class="infomodal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">How to play the game</p>
+      <button class="delete"></button>
+    </header>
+    <section class="modal-card-body">
+        <div class="modal-bodyinfo"  >
+           <img src="img/instructions3.png" style="height: 700" align=" center" frameborder="0"></img>
+        </div>
+    </section>
+    <!-- <footer class="modal-card-foot"> -->
+      <a class="button">Cancel</a>
+    <!-- </footer> -->
+  </div>
+</div>
+
+
     
       <div style = "height: 50%;overflow:auto;margin:0px;">
         <table class="table" >
           <thead class = "tableheadfont">
-            <th colspan="3" style="color: #000000; background-color:#BDECB6; font-weight: bold;">LeaderBoard</th>
+            <th colspan="3" style="color: #000000; background-color:#BDECB6; font-weight: bold; margin-bottom: 2px solid black;">LeaderBoard</th>
           </thead>
           <tbody>
             <tr>

@@ -208,7 +208,7 @@ $(function() {
     };
 
     function hostVideo(data){
-
+console.log("rigth here!!")
         $(".hostvideo").click(function(e) {
             $("#iframe").attr('src', 'https://appear.in/' + data.username)
             data.users = users;   
@@ -256,7 +256,7 @@ $(function() {
     }
 
     function joinVideoChat(data){
-        console.log("im in join video chat")
+        console.log("im in join video chatWHATSS")
         $(".online").on('click', "tr", function(){
             console.log("IM IN JOIN CHAT")
             // $("#iframe").attr('src', 'https://appear.in/'+username);
@@ -267,6 +267,13 @@ $(function() {
     
 
 
+    }
+
+    function clickInfo(data){
+        console.log("I'm in click info!")
+        $(".infomodal").click(function(){
+        $(".infomodal").toggleClass("is-active");
+    });
     }
 
     socket.on('add join event others', function(data) {
@@ -332,6 +339,10 @@ $(function() {
     $(".modal").click(function(){
         $(".modal").toggleClass("is-active");
         joinVideoChat();
+    });
+
+     $(".infomodal").click(function(){
+        $(".infomodal").toggleClass("is-active");
     });
 
     // Focus input when clicking anywhere on login page
@@ -401,10 +412,12 @@ $(function() {
         $chatPage.show();
         $loginPage.off('click');
         $(".nav").removeClass('hide');
+        clickInfo(data);
         $currentInput = $inputMessage.focus();
         hostVideo(data);
         cancelVideo(data);
-        joinVideoChat(data)
+        joinVideoChat(data);
+        
         // Tell the server your username
     });
 

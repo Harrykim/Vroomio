@@ -292,6 +292,14 @@ SideScroller.Preload.prototype = {
 
     }
 
+     function clickInfo(data){
+        
+        $(".fa-info-circle").click(function(){
+            console.log("I'm in click info!")
+        $(".infomodal").toggleClass("is-active");
+    });
+    }
+
     socket.on('add join event others', function(data) {
         for(i = 0; i < data.users.length; i ++){
             if(data.users[i].username === data.username){
@@ -355,6 +363,10 @@ SideScroller.Preload.prototype = {
     $(".modal").click(function(){
         $(".modal").toggleClass("is-active");
         joinVideoChat();
+    });
+
+    $(".infomodal").click(function(){
+        $(".infomodal").toggleClass("is-active");
     });
 
     // Focus input when clicking anywhere on login page
@@ -427,7 +439,8 @@ SideScroller.Preload.prototype = {
         $currentInput = $inputMessage.focus();
         hostVideo(data);
         cancelVideo(data);
-        joinVideoChat(data)
+        joinVideoChat(data);
+        clickInfo(data);
         // Tell the server your username
     });
 
