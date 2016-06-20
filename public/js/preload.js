@@ -17,7 +17,13 @@ SideScroller.Preload.prototype = {
     // this.load.image('playerDead', 'assets/images/player_dead.png');
     // this.load.image('goldCoin', 'assets/images/goldCoin.png');
     // this.load.audio('coin', 'assets/audio/coin.wav');
-    this.load.image('bullet', '/assets/images/bullet.png')
+    this.load.image('bullet', '/assets/images/bullet.png');
+
+    //Audio
+    this.game.load.audio('bg',"/assets/audio/bg.mp3");
+    this.game.load.audio('fire','/assets/audio/fire.mp3');
+    this.game.load.audio('getting_hit','/assets/audio/getting_hit.mp3');
+    this.game.load.audio('jump','/assets/audio/jump.mp3');
   },
 
   create: function(){

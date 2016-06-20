@@ -12,22 +12,34 @@ var text;
 // var remoteBullet; 
 // var bullet;
 
+
 var bulletHitPlayer = false;
 var afterHitSpeed = 0.5;
 
-SideScroller.Game = function(){};
+SideScroller.Game = function(game){
+  this.bg;
+  this.fire;
+  this.jump;
+  this.getting_hit;
+};
 
 SideScroller.Game.prototype = {
   preload: function() {
     this.game.time.advancedTiming = true;
   },
   create: function() {
+    this.bg = this.add.audio('bg');
+    this.bg.play('',0,0.3,true);
+    this.fire = this.add.audio('fire');
+    this.jump = this.add.audio('jump');
+    this.getting_hit = this.add.audio('getting_hit');
+
 
     this.stage.disableVisibilityChange = true;
     this.map = this.game.add.tilemap('level1');
     this.map.addTilesetImage('orig_tiles_spritesheet', 'gameTiles')
     // this.backgroundlayer = this.map.createLayer('backgroundLayer');
-    this.game.world.setBounds(0,0,3600,1900);
+    this.game.world.setBounds(0,0,3500,1900);
 
     this.blockedlayer = this.map.createLayer('blockedLayer');
     this.map.setCollisionBetween(1, 100000, true, 'blockedLayer');
@@ -116,6 +128,8 @@ SideScroller.Game.prototype = {
               }
               socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y, direction: locplaydirection});
               bulletTime = this.game.time.now + 500;
+              this.fire.play();
+              this.fire.volume = 0.2;
           }
       }
 } 
@@ -129,6 +143,8 @@ if(!bulletHitPlayer) {
         if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
             localPlayer.body.velocity.y = -690;
             localPlayer.animations.play('jumpp', 25, true);
+            this.jump.play();
+            this.jump.volume = 0.2;
         }
     }
     else if(this.cursors.left.isDown) {
@@ -138,6 +154,8 @@ if(!bulletHitPlayer) {
         if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
             localPlayer.body.velocity.y = -580;
             localPlayer.animations.play('jumpp', 25, true);
+            this.jump.play();
+            this.jump.volume = 0.2;
         }
         else {
             localPlayer.animations.play('walkk', 25, true);
@@ -151,6 +169,8 @@ if(!bulletHitPlayer) {
         if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
             localPlayer.body.velocity.y = -690;
             localPlayer.animations.play('jumpp', 25, true);
+            this.jump.play();
+            this.jump.volume = 0.2;
         } 
     }
     else if(this.cursors.right.isDown) {
@@ -161,6 +181,8 @@ if(!bulletHitPlayer) {
         if (this.cursors.up.isDown && localPlayer.body.blocked.down){
             localPlayer.body.velocity.y = -580;
             localPlayer.animations.play('jumpp', 25, true);
+            this.jump.play();
+            this.jump.volume = 0.2;
         }   
     } 
     else if(this.cursors.up.isDown && specialC.isDown && localPlayer.body.blocked.down) {
@@ -170,6 +192,8 @@ if(!bulletHitPlayer) {
     else if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
         localPlayer.body.velocity.y = -580;
         localPlayer.animations.play('jumpp', 25, true);
+        this.jump.play();
+        this.jump.volume = 0.2;
     }
     else if(this.fireButton.isDown) {
         localPlayer.animations.play('attackk', 25, true);
@@ -187,6 +211,8 @@ else {
         if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
             localPlayer.body.velocity.y = -690*afterHitSpeed;
             localPlayer.animations.play('jumpp', 25, true);
+            this.jump.play();
+            this.jump.volume = 0.2;
         }
     }
     else if(this.cursors.left.isDown) {
@@ -196,6 +222,8 @@ else {
             if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
                 localPlayer.body.velocity.y = -580*afterHitSpeed;
                 localPlayer.animations.play('jumpp', 25, true);
+                this.jump.play();
+                this.jump.volume = 0.2;
             }
             else {
                 localPlayer.animations.play('walkk', 25, true);
@@ -209,6 +237,8 @@ else {
             if(this.cursors.up.isDown && localPlayer.body.blocked.down){
                 localPlayer.body.velocity.y = -690*afterHitSpeed;
                 localPlayer.animations.play('jumpp', 25, true);
+                this.jump.play();
+                this.jump.volume = 0.2;
             } 
     }
     else if(this.cursors.right.isDown) {
@@ -219,6 +249,8 @@ else {
             if(this.cursors.up.isDown && localPlayer.body.blocked.down){
                 localPlayer.body.velocity.y = -580*afterHitSpeed;
                 localPlayer.animations.play('jumpp', 25, true);
+                this.jump.play();
+                this.jump.volume = 0.2;
             }   
     } 
     else if(this.cursors.up.isDown && specialC.isDown && localPlayer.body.blocked.down) {
@@ -228,6 +260,8 @@ else {
     else if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
         localPlayer.body.velocity.y = -580*afterHitSpeed;
         localPlayer.animations.play('jumpp', 25, true);
+        this.jump.play();
+        this.jump.volume = 0.2;
     }
     else if(this.fireButton.isDown) {
         localPlayer.animations.play('attackk', 25, true);
@@ -429,6 +463,8 @@ function processHandler(bullet, object){
   // console.log(object)
   object.kill();
   bulletHitPlayer = true;
+  this.getting_hit.play();
+  this.getting_hit.volume = 0.2;
   setTimeout(fasterFunc, 3000);
   // console.log(bulletHitPlayer);
 }
