@@ -59,6 +59,15 @@ ul {
 .modal-card {
   height: 580px;
 }
+
+.button.cancelbutton {
+  font-family: "Futura", Arial;
+  font-weight:bold;
+}
+
+.modal-card-title{
+  font-family: "Futura", Arial;
+}
 .modal-card-body {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -183,13 +192,11 @@ ul {
 /* nav */
 .nav{
   background-color:#fce473;
-  position:relative;
-  /*justify-content: center;*/
+  /*position:relative;*/
+  justify-content: center;
   height: 7%;
 }
-.nav-item.navlogo{
-  float:right;
-}
+
 
 .nav-item {
   color: #000;
@@ -203,9 +210,7 @@ ul {
 
 
 /*info modal*/
-.infomodal.modal-body{
-  height: 200px;
-}
+
 .infomodal {
   bottom: 0;
   left: 0;
@@ -234,6 +239,10 @@ ul {
   display: flex;
 }
 
+.image.is-4by3{
+  margin-top: 20%;
+}
+
 
 /* Font */
 .fa.fa-info-circle.fa-lg.modal-button{
@@ -256,9 +265,7 @@ ul {
   text-align: center;
 }
 
- .nav-item > i.fa.fa-info-circle.fa-lg.modal-button {
-    float: right !important;
-  }
+
 
 /* Messages */
 

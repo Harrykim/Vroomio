@@ -20,12 +20,14 @@
 
   <div class="pages">
     <nav class="nav hide">
-      <div class="nav-center">
-        <h2 class="nav-item navbrand" >
+
+      <div class="nav-center navbrand">
+        <h2 class="nav-item">
           Vroomio
        </h2>
       </div>
-      <div class="nav-item navlogo">
+      <div class="nav-item" id ="navlogo"  style="position:absolute; right:1.5%">
+
         <i class="fa fa-info-circle fa-lg modal-button" data-target=".infomodal" aria-hidden="true"></i>
       </div>
     </nav>
@@ -71,7 +73,7 @@
 
 
 <!-- info modal -->
-<div class="infomodal">
+<!-- <div class="infomodal">
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
@@ -82,12 +84,23 @@
         <div class="modal-bodyinfo"  >
            <img src="img/instructions3.png" style="height: 700" align=" center" frameborder="0"></img>
         </div>
-    </section>
+    </section> -->
     <!-- <footer class="modal-card-foot"> -->
-      <a class="button">Cancel</a>
+      <!-- <a class="button">Cancel</a> -->
     <!-- </footer> -->
+<!--   </div>
+</div> -->
+
+<div class="infomodal">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <p class="image is-4by3">
+      <img src="img/instructions3.png">
+    </p>
   </div>
+  <button class="modal-close"></button>
 </div>
+
 
 
     
