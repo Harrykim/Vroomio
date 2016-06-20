@@ -44,7 +44,7 @@ SideScroller.Game.prototype = {
     localPlayer = this.game.add.sprite(100, 200, 'player');
     this.game.physics.arcade.enable(localPlayer);
     this.game.camera.follow(localPlayer);
-    socket.emit('new player')
+    // socket.emit('new player')
 
     bullets = this.game.add.group();
     bullets.enableBody = true;
