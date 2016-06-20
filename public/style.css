@@ -153,8 +153,9 @@ ul {
 }
 
 .login.page .title2{
-  font-size: 400%;
-  font-family: Helvetica;
+  font-size: 500%;
+  /*font-family: Helvetica;*/
+  /*font-family: Times;*/
   font-weight: 100;
   color: #fff;
 }
