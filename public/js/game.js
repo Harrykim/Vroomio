@@ -67,7 +67,7 @@ SideScroller.Game.prototype = {
     bullets.setAll('outOfBoundsKill', true);
     bullets.setAll('checkWorldBounds', true);
     socket.on('playerMovement', onPlayerMovement);
-    localPlayer.body.gravity.y = 800;
+    localPlayer.body.gravity.y = 700;
 
     localPlayer.animations.add('idlee', [0,1,2]);
     localPlayer.animations.add('attackk', [3,4,5,6,7,8,9,10,11,12]);
@@ -271,7 +271,12 @@ else {
     };
   }
       if(localPlayer.x >= this.game.world.width) {
-        this.game.state.start('Game');
+        localPlayer.x = 20;
+        // localPlayer.y = 0;
+      }
+      if(localPlayer.x < 0) {
+        localPlayer.x = this.game.world.width - 20;
+        // localPlayer.y = 0;
       }
     // console.log("this is my x: " + localPlayer.x)
     // console.log("this is my y: " + localPlayer.y)
@@ -430,7 +435,7 @@ function createRemotePlayer(data){
   // remotePlayer.blendMode = PIXI.blendModes.ADD;
   remotePlayer.alpha = 0.7;
   remotePlayer.tint = color;
-  remotePlayer.body.gravity.y = 1000;
+  remotePlayer.body.gravity.y = 700;
   remotePlayer.anchor.setTo(1, 1);
   // console.log(remotePlayers[player])
   remotePlayers.add(remotePlayer);
