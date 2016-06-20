@@ -50,7 +50,7 @@ function playerMovements(io) {
   function onClientDisconnect(){
     console.log("i got to onClientDisconnect")
     delete SOCKETS_LIST[this.id];
-    delete players[this.id];
+    // delete players[this.id];
     this.broadcast.emit('remove player', {id: this.id});
   };
 
