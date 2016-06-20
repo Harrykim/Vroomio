@@ -55,7 +55,7 @@ SideScroller.Game.prototype = {
     bullets.setAll('outOfBoundsKill', true);
     bullets.setAll('checkWorldBounds', true);
     socket.on('playerMovement', onPlayerMovement);
-    localPlayer.body.gravity.y = 1000;
+    localPlayer.body.gravity.y = 800;
 
     localPlayer.animations.add('idlee', [0,1,2]);
     localPlayer.animations.add('attackk', [3,4,5,6,7,8,9,10,11,12]);
