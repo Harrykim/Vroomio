@@ -1,17 +1,19 @@
-#FINAL PROJECT
+#Vroomio
+Have you heard about Vroomio? Guess what? This is your chance to play and chat with your friends in real-time and compete for the highest score in our take of this classic game at http://arcane-brushlands-71360.herokuapp.com/
 
-OUR FINAL PROJECT SKELETON FOR FRONT-END
+## Technologies Used
 
-## How to use
+- HTML/CSS/JavaScipt
+- Node.js
+- Socket.IO
+- Phaser
+- Express
+- Heroku
 
-```
-$ npm install
-$ node .
-```
 
-And point your browser to `http://localhost:3000`. Optionally, specify
-a port by supplying the `PORT` env variable.
+## Contributors
 
-## Features
-
-- A LOT 
+- <a href="https://github.com/Harrykim">Harry Kim </a>
+- <a href="https://github.com/charmainetham">Charmaine Tham</a>
+- <a href="https://github.com/Lithosphere">Calvin Wang</a>
+- <a href="https://github.com/blueskywithachanceofflyingpigs">Monroe(Jae) Lee</a>
