@@ -21,6 +21,7 @@ SideScroller.Game = function(game){
   this.fire;
   this.jump;
   this.getting_hit;
+  this.teleport;
 };
 
 SideScroller.Game.prototype = {
@@ -33,6 +34,7 @@ SideScroller.Game.prototype = {
     this.fire = this.add.audio('fire');
     this.jump = this.add.audio('jump');
     this.getting_hit = this.add.audio('getting_hit');
+    this.teleport = this.add.audio('teleport');
 
 
     this.stage.disableVisibilityChange = true;
@@ -272,10 +274,14 @@ else {
   }
       if(localPlayer.x >= this.game.world.width) {
         localPlayer.x = 20;
+        this.teleport.play();
+        this.teleport.volume = 0.2;
         // localPlayer.y = 0;
       }
       if(localPlayer.x < 0) {
         localPlayer.x = this.game.world.width - 20;
+        this.teleport.play();
+        this.teleport.volume = 0.2;
         // localPlayer.y = 0;
       }
     // console.log("this is my x: " + localPlayer.x)

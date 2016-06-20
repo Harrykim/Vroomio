@@ -24,6 +24,7 @@ SideScroller.Preload.prototype = {
     this.game.load.audio('fire','/assets/audio/fire.mp3');
     this.game.load.audio('getting_hit','/assets/audio/getting_hit.mp3');
     this.game.load.audio('jump','/assets/audio/jump.mp3');
+    this.game.load.audio('teleport','/assets/audio/teleport.wav');
   },
 
   create: function(){
