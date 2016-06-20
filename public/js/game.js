@@ -131,7 +131,7 @@ SideScroller.Game.prototype = {
               socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y, direction: locplaydirection});
               bulletTime = this.game.time.now + 500;
               this.fire.play();
-              this.fire.volume = 0.25;
+              this.fire.volume = 0.2;
           }
       }
 } 
