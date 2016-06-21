@@ -256,7 +256,10 @@ SideScroller.Preload.prototype = {
             $(".modal-body2").hide();
             //$(".thankyou").replaceWith("<iframe src='https://appear.in/your-room-name' id ='iframe' width='640' height='480' frameborder='0'></img>")
             $(this).toggleClass("cancelvideo")
-            $(".cancelvideo").html('Cancel Video')
+            $(".video").hide();
+            $(".cancelvideo").show();
+            // $(".cancelvideo").html('Cancel Video')
+
             cancelVideo(data);
             joinVideoChat(data);
             e.preventDefault();
@@ -274,9 +277,12 @@ SideScroller.Preload.prototype = {
                 allusers: data.allusers
             }); 
             onlineUsers(data);
-            $(".hostvideo").html('Host video')
+            $(".modal").addClass("is-active");
+            $(".nav-item.cancelvideo").hide();
+            $(".video").show();
             $(".modal-body").hide();
             $(".modal-body2").show();
+           
             hostVideo(data);
             joinVideoChat(data);
             e.preventDefault();
@@ -288,7 +294,7 @@ SideScroller.Preload.prototype = {
 
     function joinVideoChat(data){
         console.log("im in join video chat")
-        $(".online").on('click', "tr", function(){
+        $(".online").on('click', "a", function(){
             console.log("IM IN JOIN CHAT")
             // $("#iframe").attr('src', 'https://appear.in/'+username);
             $(".modal-body").show();

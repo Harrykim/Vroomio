@@ -26,22 +26,30 @@
           Vroomio
        </h2>
       </div>
-      <div class="nav-item" id ="navlogo"  style="position:absolute; right:1.5%">
-
+      <div class="nav-item" style="position:absolute; right:5%;">
         <i class="fa fa-info-circle fa-lg modal-button" data-target=".infomodal" aria-hidden="true"></i>
       </div>
+     <div class="nav-item video" style="position:absolute; right:1%;">
+         <i class="fa fa-video-camera fa-lg hostvideo" aria-hidden="true"></i>
+     </div>
+     <div class="nav-item cancelvideo" style="position:absolute; right:1%;">
+         <i class="fa fa-times-circle fa-lg" aria-hidden="true"></i>
+      </div>
+
+
+
     </nav>
 
   <!-- <div class="testing2"> -->
-    <div style="height:93%;width:18%;position:relative;margin-right:0px;margin-left:0.05%;float:left;/*border: 2px solid gray;*/">
-      <div style = "/*border-bottom:5px solid gray;*/height:50%;overflow:auto">
+    <div style="height:93%;width:20%;position:relative;margin-right:0px;margin-left:0.05%;float:left;/*border: 2px solid gray;*/">
+      <div style = "height:50%;overflow:auto">
         <table class="table">
           <thead>
-            <th colspan="3" style="color: #000000; background-color:#BDECB6; font-weight: bold;">Current Online Users</th>
+            <th colspan="3" style="color: #000000; background-color:#BDECB6; font-weight: bold; text-align:center;">Current Online Users</th>
           </thead>
           <tbody class="online">
           <!-- <button type="button" class="hostvideo" data-toggle="modal" data-target="#myModal"> Host Video Chat</button> -->
-          <a class="button is-danger modal-button hostvideo"data-target=".modal">Host Video Chat</a>
+          <!-- <a class="button is-danger modal-button hostvideo"data-target=".modal">Host Video Chat</a> -->
           </tbody>
          
         </table>
@@ -107,7 +115,7 @@
       <div style = "height: 50%;overflow:auto;margin:0px;">
         <table class="table" >
           <thead class = "tableheadfont">
-            <th colspan="3" style="color: #000000; background-color:#BDECB6; font-weight: bold; /*margin-bottom: 2px solid gray;*/">LeaderBoard</th>
+            <th colspan="3" style="color: #000000; background-color:#BDECB6; font-weight: bold; text-align: center;">LeaderBoard</th>
           </thead>
           <tbody>
             <tr>
@@ -173,7 +181,8 @@
 
     <li class="chat page" style="/*border:2px solid gray*/;display: inline-block; float: left; height: 93%; margin-right:-0.05%">
       <div class="chatArea">
-        <ul class="messages"></ul>
+        <ul class="messages">
+        </ul>
       </div>
       <input class="inputMessage" placeholder="Type here..."/>
     </li>
