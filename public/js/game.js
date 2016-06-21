@@ -140,6 +140,8 @@ if(this.fireButton.isDown) {
               socket.emit("bulletShot", {id: socket.id, bulletX: bullet.x, bulletY: bullet.y, direction: locplaydirection, fired: remplayfire});
               
               bulletTime = this.game.time.now + 500;
+              this.fire.play();
+              this.fire.volume = 0.3;
           }
       }
   }
