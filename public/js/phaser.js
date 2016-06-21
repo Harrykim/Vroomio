@@ -3955,44 +3955,44 @@ module.exports = RaycastResult;
  */
 function RaycastResult(){
 
-  /**
-   * The normal of the hit, oriented in world space.
-   * @property {array} normal
-   */
-  this.normal = vec2.create();
+	/**
+	 * The normal of the hit, oriented in world space.
+	 * @property {array} normal
+	 */
+	this.normal = vec2.create();
 
-  /**
-   * The hit shape, or null.
-   * @property {Shape} shape
-   */
-  this.shape = null;
+	/**
+	 * The hit shape, or null.
+	 * @property {Shape} shape
+	 */
+	this.shape = null;
 
-  /**
-   * The hit body, or null.
-   * @property {Body} body
-   */
-  this.body = null;
+	/**
+	 * The hit body, or null.
+	 * @property {Body} body
+	 */
+	this.body = null;
 
-  /**
-   * The index of the hit triangle, if the hit shape was indexable.
-   * @property {number} faceIndex
-   * @default -1
-   */
-  this.faceIndex = -1;
+	/**
+	 * The index of the hit triangle, if the hit shape was indexable.
+	 * @property {number} faceIndex
+	 * @default -1
+	 */
+	this.faceIndex = -1;
 
-  /**
-   * Distance to the hit, as a fraction. 0 is at the "from" point, 1 is at the "to" point. Will be set to -1 if there was no hit yet.
-   * @property {number} fraction
-   * @default -1
-   */
-  this.fraction = -1;
+	/**
+	 * Distance to the hit, as a fraction. 0 is at the "from" point, 1 is at the "to" point. Will be set to -1 if there was no hit yet.
+	 * @property {number} fraction
+	 * @default -1
+	 */
+	this.fraction = -1;
 
-  /**
-   * If the ray should stop traversing.
-   * @readonly
-   * @property {Boolean} isStopped
-   */
-  this.isStopped = false;
+	/**
+	 * If the ray should stop traversing.
+	 * @readonly
+	 * @property {Boolean} isStopped
+	 */
+	this.isStopped = false;
 }
 
 /**
@@ -4000,12 +4000,12 @@ function RaycastResult(){
  * @method reset
  */
 RaycastResult.prototype.reset = function () {
-  vec2.set(this.normal, 0, 0);
-  this.shape = null;
-  this.body = null;
-  this.faceIndex = -1;
-  this.fraction = -1;
-  this.isStopped = false;
+	vec2.set(this.normal, 0, 0);
+	this.shape = null;
+	this.body = null;
+	this.faceIndex = -1;
+	this.fraction = -1;
+	this.isStopped = false;
 };
 
 /**
@@ -4014,7 +4014,7 @@ RaycastResult.prototype.reset = function () {
  * @param {Ray} ray
  */
 RaycastResult.prototype.getHitDistance = function (ray) {
-  return vec2.distance(ray.from, ray.to) * this.fraction;
+	return vec2.distance(ray.from, ray.to) * this.fraction;
 };
 
 /**
@@ -4022,7 +4022,7 @@ RaycastResult.prototype.getHitDistance = function (ray) {
  * @method hasHit
  */
 RaycastResult.prototype.hasHit = function () {
-  return this.fraction !== -1;
+	return this.fraction !== -1;
 };
 
 /**
@@ -4032,7 +4032,7 @@ RaycastResult.prototype.hasHit = function () {
  * @param {Ray} ray
  */
 RaycastResult.prototype.getHitPoint = function (out, ray) {
-  vec2.lerp(out, ray.from, ray.to, this.fraction);
+	vec2.lerp(out, ray.from, ray.to, this.fraction);
 };
 
 /**
@@ -4040,7 +4040,7 @@ RaycastResult.prototype.getHitPoint = function (out, ray) {
  * @method stop
  */
 RaycastResult.prototype.stop = function(){
-  this.isStopped = true;
+	this.isStopped = true;
 };
 
 /**
@@ -4050,7 +4050,7 @@ RaycastResult.prototype.stop = function(){
  * @return {boolean}
  */
 RaycastResult.prototype.shouldStop = function(ray){
-  return this.isStopped || (this.fraction !== -1 && ray.mode === Ray.ANY);
+	return this.isStopped || (this.fraction !== -1 && ray.mode === Ray.ANY);
 };
 
 /**
@@ -4062,17 +4062,17 @@ RaycastResult.prototype.shouldStop = function(ray){
  * @param {number} fraction
  */
 RaycastResult.prototype.set = function(
-  normal,
-  shape,
-  body,
-  fraction,
-  faceIndex
+	normal,
+	shape,
+	body,
+	fraction,
+	faceIndex
 ){
-  vec2.copy(this.normal, normal);
-  this.shape = shape;
-  this.body = body;
-  this.fraction = fraction;
-  this.faceIndex = faceIndex;
+	vec2.copy(this.normal, normal);
+	this.shape = shape;
+	this.body = body;
+	this.fraction = fraction;
+	this.faceIndex = faceIndex;
 };
 },{"../collision/Ray":11,"../math/vec2":30}],13:[function(_dereq_,module,exports){
 var Utils = _dereq_('../utils/Utils')
@@ -10577,7 +10577,7 @@ module.exports = Particle;
  */
 function Particle(options){
     options = options || {};
-  options.type = Shape.PARTICLE;
+	options.type = Shape.PARTICLE;
     Shape.call(this, options);
 }
 Particle.prototype = new Shape();
@@ -11375,7 +11375,7 @@ module.exports = ContactEquationPool;
  * @class
  */
 function ContactEquationPool() {
-  Pool.apply(this, arguments);
+	Pool.apply(this, arguments);
 }
 ContactEquationPool.prototype = new Pool();
 ContactEquationPool.prototype.constructor = ContactEquationPool;
@@ -11385,7 +11385,7 @@ ContactEquationPool.prototype.constructor = ContactEquationPool;
  * @return {ContactEquation}
  */
 ContactEquationPool.prototype.create = function () {
-  return new ContactEquation();
+	return new ContactEquation();
 };
 
 /**
@@ -11394,8 +11394,8 @@ ContactEquationPool.prototype.create = function () {
  * @return {ContactEquationPool}
  */
 ContactEquationPool.prototype.destroy = function (equation) {
-  equation.bodyA = equation.bodyB = null;
-  return this;
+	equation.bodyA = equation.bodyB = null;
+	return this;
 };
 
 },{"../equations/ContactEquation":21,"./Pool":55}],49:[function(_dereq_,module,exports){
@@ -11408,7 +11408,7 @@ module.exports = FrictionEquationPool;
  * @class
  */
 function FrictionEquationPool() {
-  Pool.apply(this, arguments);
+	Pool.apply(this, arguments);
 }
 FrictionEquationPool.prototype = new Pool();
 FrictionEquationPool.prototype.constructor = FrictionEquationPool;
@@ -11418,7 +11418,7 @@ FrictionEquationPool.prototype.constructor = FrictionEquationPool;
  * @return {FrictionEquation}
  */
 FrictionEquationPool.prototype.create = function () {
-  return new FrictionEquation();
+	return new FrictionEquation();
 };
 
 /**
@@ -11427,8 +11427,8 @@ FrictionEquationPool.prototype.create = function () {
  * @return {FrictionEquationPool}
  */
 FrictionEquationPool.prototype.destroy = function (equation) {
-  equation.bodyA = equation.bodyB = null;
-  return this;
+	equation.bodyA = equation.bodyB = null;
+	return this;
 };
 
 },{"../equations/FrictionEquation":23,"./Pool":55}],50:[function(_dereq_,module,exports){
@@ -11441,7 +11441,7 @@ module.exports = IslandNodePool;
  * @class
  */
 function IslandNodePool() {
-  Pool.apply(this, arguments);
+	Pool.apply(this, arguments);
 }
 IslandNodePool.prototype = new Pool();
 IslandNodePool.prototype.constructor = IslandNodePool;
@@ -11451,7 +11451,7 @@ IslandNodePool.prototype.constructor = IslandNodePool;
  * @return {IslandNode}
  */
 IslandNodePool.prototype.create = function () {
-  return new IslandNode();
+	return new IslandNode();
 };
 
 /**
@@ -11460,8 +11460,8 @@ IslandNodePool.prototype.create = function () {
  * @return {IslandNodePool}
  */
 IslandNodePool.prototype.destroy = function (node) {
-  node.reset();
-  return this;
+	node.reset();
+	return this;
 };
 
 },{"../world/IslandNode":60,"./Pool":55}],51:[function(_dereq_,module,exports){
@@ -11474,7 +11474,7 @@ module.exports = IslandPool;
  * @class
  */
 function IslandPool() {
-  Pool.apply(this, arguments);
+	Pool.apply(this, arguments);
 }
 IslandPool.prototype = new Pool();
 IslandPool.prototype.constructor = IslandPool;
@@ -11484,7 +11484,7 @@ IslandPool.prototype.constructor = IslandPool;
  * @return {Island}
  */
 IslandPool.prototype.create = function () {
-  return new Island();
+	return new Island();
 };
 
 /**
@@ -11493,8 +11493,8 @@ IslandPool.prototype.create = function () {
  * @return {IslandPool}
  */
 IslandPool.prototype.destroy = function (island) {
-  island.reset();
-  return this;
+	island.reset();
+	return this;
 };
 
 },{"../world/Island":58,"./Pool":55}],52:[function(_dereq_,module,exports){
@@ -11721,7 +11721,7 @@ module.exports = OverlapKeeperRecordPool;
  * @class
  */
 function OverlapKeeperRecordPool() {
-  Pool.apply(this, arguments);
+	Pool.apply(this, arguments);
 }
 OverlapKeeperRecordPool.prototype = new Pool();
 OverlapKeeperRecordPool.prototype.constructor = OverlapKeeperRecordPool;
@@ -11731,7 +11731,7 @@ OverlapKeeperRecordPool.prototype.constructor = OverlapKeeperRecordPool;
  * @return {OverlapKeeperRecord}
  */
 OverlapKeeperRecordPool.prototype.create = function () {
-  return new OverlapKeeperRecord();
+	return new OverlapKeeperRecord();
 };
 
 /**
@@ -11740,8 +11740,8 @@ OverlapKeeperRecordPool.prototype.create = function () {
  * @return {OverlapKeeperRecordPool}
  */
 OverlapKeeperRecordPool.prototype.destroy = function (record) {
-  record.bodyA = record.bodyB = record.shapeA = record.shapeB = null;
-  return this;
+	record.bodyA = record.bodyB = record.shapeA = record.shapeB = null;
+	return this;
 };
 
 },{"./OverlapKeeperRecord":53,"./Pool":55}],55:[function(_dereq_,module,exports){
@@ -11751,17 +11751,17 @@ module.exports = Pool;
  * @class Object pooling utility.
  */
 function Pool(options) {
-  options = options || {};
+	options = options || {};
 
-  /**
-   * @property {Array} objects
-   * @type {Array}
-   */
-  this.objects = [];
+	/**
+	 * @property {Array} objects
+	 * @type {Array}
+	 */
+	this.objects = [];
 
-  if(options.size !== undefined){
-    this.resize(options.size);
-  }
+	if(options.size !== undefined){
+		this.resize(options.size);
+	}
 }
 
 /**
@@ -11770,17 +11770,17 @@ function Pool(options) {
  * @return {Pool} Self, for chaining
  */
 Pool.prototype.resize = function (size) {
-  var objects = this.objects;
+	var objects = this.objects;
 
-  while (objects.length > size) {
-    objects.pop();
-  }
+	while (objects.length > size) {
+		objects.pop();
+	}
 
-  while (objects.length < size) {
-    objects.push(this.create());
-  }
+	while (objects.length < size) {
+		objects.push(this.create());
+	}
 
-  return this;
+	return this;
 };
 
 /**
@@ -11789,8 +11789,8 @@ Pool.prototype.resize = function (size) {
  * @return {Object}
  */
 Pool.prototype.get = function () {
-  var objects = this.objects;
-  return objects.length ? objects.pop() : this.create();
+	var objects = this.objects;
+	return objects.length ? objects.pop() : this.create();
 };
 
 /**
@@ -11800,9 +11800,9 @@ Pool.prototype.get = function () {
  * @return {Pool} Self for chaining
  */
 Pool.prototype.release = function (object) {
-  this.destroy(object);
-  this.objects.push(object);
-  return this;
+	this.destroy(object);
+	this.objects.push(object);
+	return this;
 };
 
 },{}],56:[function(_dereq_,module,exports){
@@ -12319,10 +12319,10 @@ module.exports = IslandNode;
  */
 function IslandNode(body){
 
-  /**
-   * The body that is contained in this node.
-   * @property {Body} body
-   */
+	/**
+	 * The body that is contained in this node.
+	 * @property {Body} body
+	 */
     this.body = body;
 
     /**
@@ -14915,11 +14915,11 @@ PIXI.DisplayObjectContainer.prototype.getLocalBounds = function()
     var bounds = this.getBounds();
 
     this.worldTransform = matrixCache;
-  
+	
     for (i = 0; i < this.children.length; i++)
     {
         this.children[i].updateTransform();
-    } 
+    }	
 
     return bounds;
 };
@@ -17846,7 +17846,7 @@ PIXI.WebGLStencilManager.prototype.bindGraphics = function(graphics, webGLData, 
  */
 PIXI.WebGLStencilManager.prototype.popStencil = function(graphics, webGLData, renderSession)
 {
-  var gl = this.gl;
+	var gl = this.gl;
     this.stencilStack.pop();
    
     this.count--;
@@ -19907,7 +19907,7 @@ PIXI.CanvasMaskManager.prototype.constructor = PIXI.CanvasMaskManager;
  */
 PIXI.CanvasMaskManager.prototype.pushMask = function(maskData, renderSession) {
 
-  var context = renderSession.context;
+	var context = renderSession.context;
 
     context.save();
     
@@ -86079,9 +86079,9 @@ Phaser.Physics.P2.prototype = {
         {
             object.body = new Phaser.Physics.P2.Body(this.game, object, object.x, object.y, 1);
             object.body.debug = debug;
-      if (typeof object.anchor !== 'undefined') {
-        object.anchor.set(0.5);
-      }
+			if (typeof object.anchor !== 'undefined') {
+				object.anchor.set(0.5);
+			}
         }
 
     },
@@ -87990,7 +87990,7 @@ Phaser.Physics.P2.FixtureList.prototype = {
 Phaser.Physics.P2.PointProxy = function (world, destination) {
 
     this.world = world;
-  this.destination = destination;
+	this.destination = destination;
 
 };
 
@@ -88093,7 +88093,7 @@ Object.defineProperty(Phaser.Physics.P2.PointProxy.prototype, "my", {
 Phaser.Physics.P2.InversePointProxy = function (world, destination) {
 
     this.world = world;
-  this.destination = destination;
+	this.destination = destination;
 
 };
 
@@ -89381,9 +89381,9 @@ Phaser.Physics.P2.Body.prototype = {
     */
     removeShape: function (shape) {
 
-    var result = this.data.removeShape(shape);
+		var result = this.data.removeShape(shape);
 
-    this.shapeChanged();
+		this.shapeChanged();
 
         return result;
     },
@@ -90814,45 +90814,45 @@ Phaser.Physics.P2.Material.prototype.constructor = Phaser.Physics.P2.Material;
 */
 Phaser.Physics.P2.ContactMaterial = function (materialA, materialB, options) {
 
-  /**
-  * @property {number} id - The contact material identifier.
-  */
+	/**
+	* @property {number} id - The contact material identifier.
+	*/
 
-  /**
-  * @property {Phaser.Physics.P2.Material} materialA - First material participating in the contact material.
-  */
+	/**
+	* @property {Phaser.Physics.P2.Material} materialA - First material participating in the contact material.
+	*/
 
-  /**
-  * @property {Phaser.Physics.P2.Material} materialB - Second material participating in the contact material.
-  */
+	/**
+	* @property {Phaser.Physics.P2.Material} materialB - Second material participating in the contact material.
+	*/
 
-  /**
-  * @property {number} [friction=0.3] - Friction to use in the contact of these two materials.
-  */
+	/**
+	* @property {number} [friction=0.3] - Friction to use in the contact of these two materials.
+	*/
 
-  /**
-  * @property {number} [restitution=0.0] - Restitution to use in the contact of these two materials.
-  */
+	/**
+	* @property {number} [restitution=0.0] - Restitution to use in the contact of these two materials.
+	*/
 
-  /**
-  * @property {number} [stiffness=1e7] - Stiffness of the resulting ContactEquation that this ContactMaterial generates.
-  */
+	/**
+	* @property {number} [stiffness=1e7] - Stiffness of the resulting ContactEquation that this ContactMaterial generates.
+	*/
 
-  /**
-  * @property {number} [relaxation=3] - Relaxation of the resulting ContactEquation that this ContactMaterial generates.
-  */
+	/**
+	* @property {number} [relaxation=3] - Relaxation of the resulting ContactEquation that this ContactMaterial generates.
+	*/
 
-  /**
-  * @property {number} [frictionStiffness=1e7] - Stiffness of the resulting FrictionEquation that this ContactMaterial generates.
-  */
+	/**
+	* @property {number} [frictionStiffness=1e7] - Stiffness of the resulting FrictionEquation that this ContactMaterial generates.
+	*/
 
-  /**
-  * @property {number} [frictionRelaxation=3] - Relaxation of the resulting FrictionEquation that this ContactMaterial generates.
-  */
+	/**
+	* @property {number} [frictionRelaxation=3] - Relaxation of the resulting FrictionEquation that this ContactMaterial generates.
+	*/
 
-  /**
-  * @property {number} [surfaceVelocity=0] - Will add surface velocity to this material. If bodyA rests on top if bodyB, and the surface velocity is positive, bodyA will slide to the right.
-  */
+	/**
+	* @property {number} [surfaceVelocity=0] - Will add surface velocity to this material. If bodyA rests on top if bodyB, and the surface velocity is positive, bodyA will slide to the right.
+	*/
 
     p2.ContactMaterial.call(this, materialA, materialB, options);
 
@@ -93253,7 +93253,7 @@ Phaser.Tilemap.prototype = {
             this.layers[layer].data[ diffY + tileblock[i].y ][ diffX + tileblock[i].x ].copy(tileblock[i]);
         }
 
-    this.layers[layer].dirty = true;
+		this.layers[layer].dirty = true;
         this.calculateFaces(layer);
 
     },

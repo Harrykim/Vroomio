@@ -19,10 +19,16 @@ function playerMovements(io) {
     socket.on('bulletShot', function(data){
         console.log("i got to on bullet shot")
         console.log(data.bulletX)
-        socket.broadcast.emit('remotePlayerBullet', {id: data.id, x: data.bulletX, y: data.bulletY, direction: data.direction})
+      socket.broadcast.emit('remotePlayerBullet', {id: data.id, x: data.bulletX, y: data.bulletY, direction: data.direction, fired: data.fired})    
     });
     socket.on('lobby', onLobby);
+    socket.on('took damage', onTookDamage);
 };
+
+  function onTookDamage(){
+    this.emit('local player damage')
+  }
+
 
   function onPlayerMovement(data){
       // var pack = {}
@@ -32,7 +38,19 @@ function playerMovements(io) {
       //   x: data.x,
       //   y: data.y
       // }
-      this.broadcast.emit('playerMovement', {id: this.id, x: data.x, y: data.y})
+           this.broadcast.emit('playerMovement', 
+        {id: this.id, 
+          x: data.x, 
+          y: data.y, 
+          healthX: data.healthBarX, 
+          healthY: data.healthBarY,
+          health2X: data.healthBar2X,
+          health2Y: data.healthBar2Y,
+          health3X: data.healthBar3X,
+          health3Y: data.healthBar3Y,
+          direction: data.direction, 
+          fired: data.fired
+        })
   };
 
   function onLobby(data){
