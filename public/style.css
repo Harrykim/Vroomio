@@ -8,7 +8,10 @@ html {
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
 }
-
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
 html, input {
   font-family:
     "HelveticaNeue-Light",
@@ -39,7 +42,7 @@ canvas {
 th{
   color: #000000; 
   background-color:#BDECB6; 
-  font-size: 110%;
+  font-size: 110;
   font-weight: bold;
   letter-spacing: 2px;
   text-align: center;  
@@ -131,9 +134,7 @@ ul {
    width: 100%
    position: absolute;
    }*/
-  .nav-item.videocancel{
-    /*display:none;*/
-  }
+
 
 
 .login.page .form .usernameInput {
@@ -195,6 +196,21 @@ ul {
 
 
 /*info modal*/
+.modal-card-head {
+  background-color: #e2f7de;  
+  text-align: center;
+
+}
+.modal-card-foot{
+  background-color: #e2f7de;  
+}
+
+.modal-card-title{
+  font-family:"Chalkduster", cursive, sans-serif;
+  font-weight: bold;
+  letter-spacing: 2px;
+  font-size: 130%;
+}
 
 .infomodal {
   bottom: 0;
@@ -242,10 +258,11 @@ ul {
   color:#000;
    
 }
-.fa.fa-times-circle.fa-lg{
+.fa.fa-times-circle{
   font-size: 100%;
   cursor: pointer;
   color:red;
+
 }
 
 .cancelvideo{
@@ -338,4 +355,3 @@ ul {
     src: url(Jugglingoose.ttf);
 }
 
-]
