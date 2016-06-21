@@ -223,11 +223,11 @@ SideScroller.Preload.prototype = {
         for (var i = 0; i < (data.users).length; i++) {
             var order = i + 1
             if(data.users[i].hosting){
-                $('.online').append("<tr class='onlineusers "+ data.users[i].username +"'><td>" + order + " </td><td>"+ data.users[i].username +"</td><td><a class = 'button is-info modal-button joinchat'  data-target='.modal .is-active'>Join</p></td></tr>" );
+                $('.online').append("<tr class='onlineusers "+ data.users[i].username +"'><td>" + order + ". </td><td>"+ data.users[i].username +"</td><td><a class = 'button is-info modal-button joinchat'  data-target='.modal .is-active'>Join</p></td></tr>" );
                 $("#iframe").attr('src', 'https://appear.in/'+data.users[i].username)
  
             } else {
-                $('.online').append("<tr class='" + data.users[i].username + "'><td>" + order + "&nbsp &nbsp </td><td>" + data.users[i].username + "</td><td></td></tr>");
+                $('.online').append("<tr class='" + data.users[i].username + "'><td>" + order + ".&nbsp &nbsp </td><td>" + data.users[i].username + "</td><td></td></tr>");
             };
         }
     };
