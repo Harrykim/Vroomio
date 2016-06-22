@@ -1,5 +1,5 @@
 #Vroomio
-Have you heard about Vroomio? Guess what? This is your chance to play and chat with your friends in real-time and compete for the highest score in our take of this classic game at http://arcane-brushlands-71360.herokuapp.com/
+Have you heard about Vroomio? Guess what? This is your chance to play and chat with your friends in real-time and compete for the highest score in our take of this classic game at www.vroomio.club
 
 ## Technologies Used
 
