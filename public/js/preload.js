@@ -296,28 +296,18 @@ SideScroller.Preload.prototype = {
     }
 
     function joinVideoChat(data){
-        console.log("im in join video chat")
-        $(".online").on('click', "a", function(){
+        console.log("im in join video chatWHATSS")
+        $(".online").on('click', "tr", function(){
             console.log("IM IN JOIN CHAT")
-            //
-            $("td").toggleClass("cancel")
+            // $("#iframe").attr('src', 'https://appear.in/'+username);
             $(".modal-body").show();
             $(".modal-body2").hide();
             $(".modal").addClass("is-active");
-            $('.online td').eq(2).html("<a class = 'button is-danger'>Cancel</a>");
-            cancelJoinVideoChat(data);
-
         });
-
-        function cancelJoinVideoChat(data){
-            $(".online td").on('click', "a", function(){
-                $('.online td.cancel').eq(2).html("<a class = 'button is-info modal-button joinchat'  data-target='.modal .is-active'>Join</p>");
-                $(".modal-body").hide();
-                onlineUsers(data);
-                joinVideoChat(data);    
-        });
-    }
     
+
+    
+        
     }
 
      function clickInfo(data){
