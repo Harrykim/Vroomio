@@ -259,6 +259,8 @@ SideScroller.Preload.prototype = {
             $(this).toggleClass("cancelvideo")
             $(".video").hide();
             $(".cancelvideo").show();
+            $(".modal-card-title").text("Welcome To Vroomio's Video Chat")
+
             // $(".cancelvideo").html('Cancel Video')
 
             cancelVideo(data);
@@ -284,8 +286,8 @@ SideScroller.Preload.prototype = {
             $("#iframe").attr('src', 'https://appear.in/' + data.username)
             $(".modal-body").hide();
             $(".modal-body2").show();
-            
-           
+            $(".modal-card-title").text("Thank you for using Vroomio's video chat")
+
             hostVideo(data);
             joinVideoChat(data);
             e.preventDefault();
@@ -296,9 +298,7 @@ SideScroller.Preload.prototype = {
     }
 
     function joinVideoChat(data){
-        console.log("im in join video chatWHATSS")
         $(".online").on('click', "tr", function(){
-            console.log("IM IN JOIN CHAT")
             // $("#iframe").attr('src', 'https://appear.in/'+username);
             $(".modal-body").show();
             $(".modal-body2").hide();

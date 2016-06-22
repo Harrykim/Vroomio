@@ -258,8 +258,8 @@ ul {
   color:#000;
    
 }
-.fa.fa-times-circle{
-  font-size: 100%;
+.fa.fa-times.fa-lg{
+  font-size: 110%;
   cursor: pointer;
   color:red;
 
