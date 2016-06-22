@@ -279,6 +279,10 @@ ul {
 .inputMessage {
   font-size: 100%;
   font-family:"Comic Sans MS", cursive, sans-serif;
+  border-bottom: none;
+  border-right:none;
+  border-left:none;
+  margin-left:1px;
 }
 
 .log {
@@ -354,6 +358,9 @@ ul {
     text-align: center;
 }
 
+.online tr td{
+  text-align: center;
+}
 
 #gameDiv{
   "width:58.61%; 
