@@ -424,6 +424,7 @@ SideScroller.Preload.prototype = {
         log(data.username + ' joined');
         addParticipantsMessage(data);
         onlineUsers(data);
+        leaderBoard(data);
     });
 
     // Whenever the server emits 'user left', log it in the chat body
@@ -432,7 +433,7 @@ SideScroller.Preload.prototype = {
         addParticipantsMessage(data);
         removeChatTyping(data);
         onlineUsers(data);
-
+        leaderBoard(data);
     });
 
     // Whenever the server emits 'typing', show the typing message
@@ -447,6 +448,7 @@ SideScroller.Preload.prototype = {
 
     socket.on('online', function(data) {
         onlineUsers(data);
+        leaderBoard(data);
     });
 
 
