@@ -13,6 +13,8 @@ SideScroller.Preload.prototype = {
     this.load.tilemap('level1', 'assets/tilemaps/fighting2.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.image('gameTiles', 'assets/images/orig_tiles_spritesheet.png');
     this.load.spritesheet('player', 'assets/images/enemymoving.png', 68, 96);
+    this.load.spritesheet('bang', 'assets/images/heal_001.png', 100, 100, 25);
+    this.load.spritesheet('coins', 'assets/images/coins.png', 44, 40, 10);
     // this.load.image('playerDuck', 'assets/images/player_duck.png');
     // this.load.image('playerDead', 'assets/images/player_dead.png');
     // this.load.image('goldCoin', 'assets/images/goldCoin.png');
@@ -21,11 +23,13 @@ SideScroller.Preload.prototype = {
     this.load.image('bullet', '/assets/images/bullet.png');
 
     //Audio
-    this.game.load.audio('bg',"/assets/audio/bg.mp3");
+    this.game.load.audio('bg',"/assets/audio/super_italian_dungeon_crawler.mp3");
     this.game.load.audio('fire','/assets/audio/fire.mp3');
     this.game.load.audio('getting_hit','/assets/audio/getting_hit.mp3');
     this.game.load.audio('jump','/assets/audio/jump.mp3');
     this.game.load.audio('teleport','/assets/audio/teleport.wav');
+    this.game.load.audio('sad', '/assets/audio/quit.mp3');
+    this.game.load.audio('death', '/assets/audio/death.mp3');
   },
 
   create: function(){
@@ -467,6 +471,34 @@ SideScroller.Preload.prototype = {
         $('.form h3').text("Another user has this name already please use a different username")
 
     });
+        function leaderBoard(data){
+        var sorted = data.users.sort(function(a,b){
+            return a.score - b.score;
+        });
+        sorted.reverse();
+        // console.log(data);
+        // console.log(sorted);
+        $('.board').empty();
+        $('.board').append("<tr><td>Kills</td><td>Username</td></tr>")
+        for (var i = 0; i < (data.users).length; i++) {
+            
+            // scoreArray.push(data.users[i].score);
+            // scoreArray.sort().reverse();
+            // if(scoreArray[i] === data.users[i].score){
+
+                // for(var n =0; n<scoreArray.length; n++){
+                // console.log(data.users);
+                    
+                    $('.board').append("<tr><td>"+ sorted[i].score +"</td><td>"+ sorted[i].username +"</td></tr>")
+                // };
+            // };
+        };
+    }
+    socket.on('change points s2c', function(data){
+        // console.log(data.users);
+        users = data.users;
+        leaderBoard(data);
+    })
     this.state.start('Game');
   }
 }

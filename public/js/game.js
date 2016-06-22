@@ -13,7 +13,14 @@ var locplaydirection;
 var remplayfire;
 
 
+var bGMusic;
+var enemyShot;
+var sad;
+var death;
 
+var mute = false;
+var muteButton;
+var fireButton;
 var bulletHitPlayer = false;
 var afterHitSpeed = 0.5;
 
@@ -23,6 +30,8 @@ SideScroller.Game = function(game){
   this.jump;
   this.getting_hit;
   this.teleport;
+  this.sad;
+  this.death;
 };
 
 SideScroller.Game.prototype = {
@@ -31,8 +40,13 @@ SideScroller.Game.prototype = {
   },
   create: function() {
     this.bg = this.add.audio('bg');
-    this.bg.play('',0,0.25,true);
+    bGMusic = this.bg;
     this.fire = this.add.audio('fire');
+    enemyShot = this.fire;
+    this.sad = this.add.audio('sad');
+    sad = this.sad;
+    this.death = this.add.audio('death');
+    death = this.death;
     this.jump = this.add.audio('jump');
     this.getting_hit = this.add.audio('getting_hit');
     this.teleport = this.add.audio('teleport');
@@ -56,7 +70,11 @@ SideScroller.Game.prototype = {
     addSocketHandlers();
     localUsername = this.game.add.text(-500, -500, '', {font: "25px Comic Sans MS", fill: "white"});
     localUsername.anchor.setTo(0.5, 0.5);
-    localPlayer = this.game.add.sprite(100, 200, 'player');
+    var randomLocationX = Math.floor(Math.random() * 3400) + 100;
+    localPlayer = this.game.add.sprite(randomLocationX, 200, 'player');
+
+
+    localPlayer.anchor.setTo(0.5, 1);
     localHealthText = this.game.add.image(-500, -500, 'heart');
     localHealthText2 = this.game.add.image(-500, -500, 'heart');
     localHealthText3 = this.game.add.image(-500, -500, 'heart');
@@ -77,6 +95,7 @@ SideScroller.Game.prototype = {
     bullets.setAll('anchor.y', 1);
     bullets.setAll('outOfBoundsKill', true);
     bullets.setAll('checkWorldBounds', true);
+    bullets.id = socket.id;
     socket.on('playerMovement', onPlayerMovement);
     localPlayer.body.gravity.y = 400;
 
@@ -86,8 +105,8 @@ SideScroller.Game.prototype = {
     localPlayer.animations.add('jumpp', [23,24,25,26,27,28,29,30,31,32]);
     localPlayer.animations.add('runn', [33,34,35,36,37,38,39,40,41,42]);
     localPlayer.animations.add('walkk', [43,44,45,46,47,48,49,50,51,52]);
+
     specialC = this.game.input.keyboard.addKey(Phaser.Keyboard.TILDE);
-    this.fireButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.cursors = this.game.input.keyboard.createCursorKeys();
     // socket.on('playerMovement', onPlayerMovement);  
     // socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y})
@@ -110,6 +129,19 @@ SideScroller.Game.prototype = {
 
   },
   update: function(){
+
+    if(muteButton && muteButton.isDown && mute == false){
+      setTimeout(function(){
+       mute = true;
+        SideScroller.game.sound.mute = true;
+      }, 150);
+    } else if(muteButton && muteButton.isDown && mute == true){
+      setTimeout(function(){
+        mute = false;
+        SideScroller.game.sound.mute = false;
+      }, 150);
+    }
+
     this.game.physics.arcade.collide(localPlayer, this.blockedlayer)
     this.game.physics.arcade.collide(remotePlayers, this.blockedlayer);
     // this.game.physics.arcade.collide(remoteBullets, localPlayer);
@@ -119,21 +151,22 @@ SideScroller.Game.prototype = {
     this.game.physics.arcade.collide(remoteBullets, this.blockedlayer, collisionHandler, null, this);
     this.game.physics.arcade.collide(bullets, this.blockedlayer, collisionHandler, null, this);
     this.game.physics.arcade.collide(remoteBullets, localPlayer, processHandler, null, this);
-    this.game.physics.arcade.overlap(bullets, remotePlayers, processHandler2, null, this);
+    this.game.physics.arcade.overlap(bullets, remotePlayers, processHandler3, null, this);
     this.game.physics.arcade.overlap(remoteBullets, remotePlayers, processHandler2, null, this);
-
-if(this.fireButton.isDown) {
+    this.game.physics.arcade.overlap(localPlayer, bullets, processHandler2, null, this);
+if(fireButton){
+if(fireButton.isDown) {
       localPlayer.animations.play('attackk', 40, true);
       if(this.game.time.now > bulletTime) {
           bullet = bullets.getFirstExists(false);
           if(bullet) {
               if(remplayfire === 'leftt') {
-                  bullet.reset(localPlayer.x - 100, localPlayer.y + -49);
+                  bullet.reset(localPlayer.x - 75, localPlayer.y + -49);
                   bullet.body.velocity.x = -400;
                   // socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
               }
               else if(remplayfire === 'rightt') {
-                  bullet.reset(localPlayer.x + 100, localPlayer.y + -49);
+                  bullet.reset(localPlayer.x + 75, localPlayer.y + -49);
                   bullet.body.velocity.x = 400;
                   // socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
               }
@@ -145,6 +178,7 @@ if(this.fireButton.isDown) {
           }
       }
   }
+}
     
 if(!bulletHitPlayer) {
     if(this.cursors.left.isDown && specialC.isDown) {
@@ -157,6 +191,9 @@ if(!bulletHitPlayer) {
         if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
             localPlayer.body.velocity.y = -480;
             localPlayer.animations.play('jumpp', 25, true);
+            this.jump.play();
+            this.jump.volume = 0.3;
+
                 // socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
         }
     }
@@ -169,6 +206,8 @@ if(!bulletHitPlayer) {
         if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
             localPlayer.body.velocity.y = -360;
             localPlayer.animations.play('jumpp', 25, true);
+            this.jump.play();
+            this.jump.volume = 0.3;
                 // socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
         }
         else {
@@ -185,6 +224,8 @@ if(!bulletHitPlayer) {
         if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
             localPlayer.body.velocity.y = -480;
             localPlayer.animations.play('jumpp', 25, true);
+            this.jump.play();
+            this.jump.volume = 0.3;
                 // socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
         } 
     }
@@ -198,20 +239,27 @@ if(!bulletHitPlayer) {
         if (this.cursors.up.isDown && localPlayer.body.blocked.down){
             localPlayer.body.velocity.y = -360;
             localPlayer.animations.play('jumpp', 25, true);
+            this.jump.play();
+            this.jump.volume = 0.3;
+
                 // socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
         }   
     } 
     else if(this.cursors.up.isDown && specialC.isDown && localPlayer.body.blocked.down) {
         localPlayer.body.velocity.y = -480;
-        localPlayer.animations.play('jumpattackk', 25, true);      
+        localPlayer.animations.play('jumpattackk', 25, true);
+            this.jump.play();
+            this.jump.volume = 0.3;      
             // socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
     }    
     else if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
         localPlayer.body.velocity.y = -360;
         localPlayer.animations.play('jumpp', 25, true);
+        this.jump.play();
+        this.jump.volume = 0.3;
             // socket.emit('movement', {id: socket.id, x: localPlayer.x, y: localPlayer.y});
     }
-    else if(this.fireButton.isDown) {
+    else if(fireButton && fireButton.isDown) {
         localPlayer.animations.play('attackk', 40, true);
         locplaydirection = "shoot";
     }
@@ -230,6 +278,8 @@ else {
         if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
             localPlayer.body.velocity.y = -480*afterHitSpeed;
             localPlayer.animations.play('jumpp', 25, true);
+            this.jump.play();
+            this.jump.volume = 0.3;
         }
     }
     else if(this.cursors.left.isDown) {
@@ -240,6 +290,8 @@ else {
             if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
                 localPlayer.body.velocity.y = -360*afterHitSpeed;
                 localPlayer.animations.play('jumpp', 25, true);
+                this.jump.play();
+                this.jump.volume = 0.3;
             }
             else {
                 localPlayer.animations.play('walkk', 25, true);
@@ -254,6 +306,8 @@ else {
             if(this.cursors.up.isDown && localPlayer.body.blocked.down){
                 localPlayer.body.velocity.y = -480*afterHitSpeed;
                 localPlayer.animations.play('jumpp', 25, true);
+                this.jump.play();
+                this.jump.volume = 0.3;
             } 
     }
     else if(this.cursors.right.isDown) {
@@ -265,17 +319,23 @@ else {
             if(this.cursors.up.isDown && localPlayer.body.blocked.down){
                 localPlayer.body.velocity.y = -360*afterHitSpeed;
                 localPlayer.animations.play('jumpp', 25, true);
+                this.jump.play();
+                this.jump.volume = 0.3;
             }   
     } 
     else if(this.cursors.up.isDown && specialC.isDown && localPlayer.body.blocked.down) {
         localPlayer.body.velocity.y = -480*afterHitSpeed;
-        localPlayer.animations.play('jumpattackk', 25, true);      
+        localPlayer.animations.play('jumpattackk', 25, true);
+        this.jump.play();
+        this.jump.volume = 0.3;      
     }    
     else if(this.cursors.up.isDown && localPlayer.body.blocked.down) {
         localPlayer.body.velocity.y = -360*afterHitSpeed;
         localPlayer.animations.play('jumpp', 25, true);
+        this.jump.play();
+        this.jump.volume = 0.3;
     }
-    else if(this.fireButton.isDown) {
+    else if(fireButton.isDown) {
         localPlayer.animations.play('attackk', 40, true);
         locplaydirection = 'shoot';
     }
@@ -348,14 +408,42 @@ else {
     localHealthText2.kill();
   }
   if(localPlayer.health == 0){
+    sad.volume = 0.5;
+    sad.play();
+    var bang = SideScroller.game.add.sprite(localPlayer.x, localPlayer.y - 40, 'bang');
+      bang.anchor.setTo(0.5, 0.5);
+      bang.animations.add('bang', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]);
+      bang.animations.play('bang', 25)
+      setTimeout(function(){
+        bang.kill();
+    }, 3000);
+    var randomLocation = Math.floor(Math.random() * 3400) + 100;
     localHealthText.kill();
-    localPlayer.x = -50
-    localPlayer.y = -50
+    localPlayer.health = 3;
+    localPlayer.x = randomLocation
+    localPlayer.y = -100
+    var coins1 = SideScroller.game.add.sprite(localPlayer.x, localPlayer.y + 200, 'coins')
+    var coins2 = SideScroller.game.add.sprite(localPlayer.x + 40, localPlayer.y + 200, 'coins')
+    var coins3 = SideScroller.game.add.sprite(localPlayer.x - 40, localPlayer.y + 200, 'coins')
+    coins1.animations.add('spinning', [0,1,2,3,4,5,6,7,8,9,10,9,8,7,6,5,4,3,2,1,0,1,2,3,4,5,6,7,8,9,10]);
+    coins2.animations.add('spinning', [0,1,2,3,4,5,6,7,8,9,10,9,8,7,6,5,4,3,2,1,0,1,2,3,4,5,6,7,8,9,10]);
+    coins3.animations.add('spinning', [0,1,2,3,4,5,6,7,8,9,10,9,8,7,6,5,4,3,2,1,0,1,2,3,4,5,6,7,8,9,10]);
+    coins1.animations.play('spinning', 10)
+    coins2.animations.play('spinning', 10)
+    coins3.animations.play('spinning', 10)
     localPlayer.body.gravity.y = 0;
     setTimeout(function(){
+      coins3.kill();
+    }, 1000);
+    setTimeout(function(){
+      coins2.kill();
+    }, 2000);
+
+    setTimeout(function(){
+      coins1.kill();
       localPlayer.health = 3;
       localPlayer.body.gravity.y = 400;
-      localPlayer.x = 100;
+      localPlayer.x = randomLocation;
       localPlayer.y = 200;
   }, 3000)
       localHealthText = SideScroller.game.add.image(-500, -500, 'heart')
@@ -365,27 +453,52 @@ else {
 
 for(var i = 0; i < remotePlayers.children.length; i++){
 
-
-  if(remotePlayers.children[i].hp == 2){
+  if(remotePlayers.children[i].hp == 2 && remotePlayers.children[i].y == 200){
+    remotePlayers.children[i].heart3.kill();
+    remotePlayers.children[i].heart2.kill();
+    remotePlayers.children[i].heart1.kill();
+    remotePlayers.children[i].hp = 3;
+    remotePlayers.children[i].heart1 = SideScroller.game.add.image(-500, -500, "heart");
+    remotePlayers.children[i].heart2 = SideScroller.game.add.image(-500, -500, "heart");
+    remotePlayers.children[i].heart3 = SideScroller.game.add.image(-500, -500, "heart");
+    remotePlayers.children[i].heart1.anchor.setTo(0.5, 0.5);
+    remotePlayers.children[i].heart2.anchor.setTo(0.5, 0.5);
+    remotePlayers.children[i].heart3.anchor.setTo(0.5, 0.5);
+  }else if(remotePlayers.children[i].hp == 2){
     remotePlayers.children[i].heart3.kill();
   }
-  if(remotePlayers.children[i].hp == 1){
+
+  if(remotePlayers.children[i].hp == 1 && remotePlayers.children[i].y == 200){
+    remotePlayers.children[i].heart2.kill();
+    remotePlayers.children[i].heart1.kill();
+    remotePlayers.children[i].hp = 3;
+    remotePlayers.children[i].heart1 = SideScroller.game.add.image(-500, -500, "heart");
+    remotePlayers.children[i].heart2 = SideScroller.game.add.image(-500, -500, "heart");
+    remotePlayers.children[i].heart3 = SideScroller.game.add.image(-500, -500, "heart");
+    remotePlayers.children[i].heart1.anchor.setTo(0.5, 0.5);
+    remotePlayers.children[i].heart2.anchor.setTo(0.5, 0.5);
+    remotePlayers.children[i].heart3.anchor.setTo(0.5, 0.5);
+  } else if(remotePlayers.children[i].hp == 1){
     remotePlayers.children[i].heart2.kill();
   }
   if(remotePlayers.children[i].hp == 0){
     remotePlayers.children[i].heart1.kill();
     // object.x = -500
     // object.y = -500;
-    remotePlayers.children[i].hp = 3;
+      // setTimeout(function(){
+        remotePlayers.children[i].hp = 3;
+      // }, 2500)
+
       remotePlayers.children[i].heart1 = SideScroller.game.add.image(-500, -500, "heart");
       remotePlayers.children[i].heart2 = SideScroller.game.add.image(-500, -500, "heart");
       remotePlayers.children[i].heart3 = SideScroller.game.add.image(-500, -500, "heart");
       remotePlayers.children[i].heart1.anchor.setTo(0.5, 0.5);
       remotePlayers.children[i].heart2.anchor.setTo(0.5, 0.5);
       remotePlayers.children[i].heart3.anchor.setTo(0.5, 0.5);
+
+
     // socket.emit('remote player killed', {myId: localPlayer.id, remoteId: object.id})
    }
-
  }
 
   },
@@ -405,8 +518,18 @@ function addSocketHandlers(){
   socket.on('remotePlayerBullet', onRemotePlayerBullet);
   socket.on('login successful', function(data){
     localPlayer.username = data.username;
+    localPlayer.users = data.users;
     localUsername.setText(localPlayer.username)
-  })
+    fireButton = SideScroller.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    muteButton = SideScroller.game.input.keyboard.addKey(Phaser.Keyboard.M)
+    bGMusic.play('',0,0.25,true);
+  });
+  socket.on('user joined',function(data){
+    localPlayer.users = data.users;
+  });
+  socket.on('change points s2c',function(data){
+    localPlayer.users = data.users;
+  });
   socket.on('local player damage', function(){
     localPlayer.health -= 1;
   })
@@ -483,21 +606,14 @@ function playerDirectionRight() {
 }
 
 function onRemotePlayerBullet(data) {
-  // console.log("i got to on remote player bullet")
-  // console.log("remote player's bullet x: " + data.x);
-  // console.log(data.y);
 
   this.remoteBullet = remoteBullets.create(
     data.x,
-    data.y,
+    data.y - 18,
     'bullet'
-    )
-  // this.remoteBullet.body.velocity.x = 400;
-  // console.log(remoteBullet.body)
-  // remoteBullet.x = data.x;
-  // remoteBullet.y = data.y + 5;
-  // remoteBullet = bullet;
-  // bullet.body.velocity.x = 400;
+  );
+  this.remoteBullet.id = data.id
+
   this.remoteBullet.enableBody = true;
   SideScroller.game.physics.enable(this.remoteBullet,Phaser.Physics.ARCADE);
   
@@ -511,7 +627,10 @@ function onRemotePlayerBullet(data) {
     this.remoteBullet.body.velocity.x = -400;
     // remoteBullet.reset(localPlayer.x - 139, localPlayer.y + -149);
   }
-
+  if(data.x + 500 < localPlayer.x || data.x - 500 < localPlayer.x){
+    enemyShot.play();
+    enemyShot.volume = 0.3;
+  }
 
 }
 
@@ -564,10 +683,9 @@ function createRemotePlayer(data){
   remotePlayer.body.immovable = true;
   remotePlayer.id = data.id;
   // remotePlayer.blendMode = PIXI.blendModes.ADD;
-  remotePlayer.alpha = 0.7;
   remotePlayer.tint = color;
   remotePlayer.body.gravity.y = 400;
-  remotePlayer.anchor.setTo(1, 1);
+  remotePlayer.anchor.setTo(0.5, 1);
   remotePlayer.heart1 = SideScroller.game.add.image(-500, -500, "heart");
   remotePlayer.heart2 = SideScroller.game.add.image(-500, -500, "heart");
   remotePlayer.heart3 = SideScroller.game.add.image(-500, -500, "heart");
@@ -621,13 +739,33 @@ function fasterFunc(){
   bulletHitPlayer = false;
 }
 
-function processHandler2(bullet, object){
+function processHandler3(bullet, object){
   // console.log("i got to process handler")
   // console.log(bullet)
   // console.log(object)
   object.hp -= 1;
+  // console.log(localPlayer.users);
   if(object.hp == 0){
-    localPlayer.points += 50;
+      console.log("got to bang")
+      death.volume = 0.3;
+      death.play();
+      var bang = SideScroller.game.add.sprite(object.x, object.y - 40, 'bang');
+      bang.anchor.setTo(0.5, 0.5);
+      bang.animations.add('bang', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]);
+      bang.animations.play('bang', 25)
+      setTimeout(function(){
+        bang.kill();
+      }, 3000);
+    for(var i=0; i < localPlayer.users.length; i++){
+      if(localPlayer.users[i].username === localPlayer.username){
+        localPlayer.users[i].score += 1;
+      };
+    };
+    socket.emit('change points', {
+      users: localPlayer.users,
+      username: localPlayer.username
+    })
+    // console.log(localPlayer.users);
   }
   bullet.kill();
 }
@@ -637,6 +775,37 @@ function collisionHandler(bullet1, object){
   bullet1.kill();
 }
 
+function processHandler2(bullet, object){
+  console.log(bullet.id)
+  console.log(object.id)
+  // console.log("i got to process handler")
+  // console.log(bullet)
+  // console.log(object)
+  if("/#"+ bullet.id != object.id){
+    object.hp -= 1;
+    if(object.hp == 0){
+      death.volume = 0.3;
+      death.play();
+      console.log("got to bang")
+      var bang = SideScroller.game.add.sprite(object.x, object.y - 40, 'bang');
+      bang.anchor.setTo(0.5, 0.5);
+      bang.animations.add('bang', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]);
+      bang.animations.play('bang', 25)
+      setTimeout(function(){
+        bang.kill();
+      }, 3000);
+    }
+  }
+  // if(object.hp == 0){
+  //   localPlayer.points += 50;
+    
+  // }
+  if(bullet != localPlayer){
+   bullet.kill();
+  } else {
+    object.kill();
+  }
+}
 
 
 // function onRemovePlayer(data){

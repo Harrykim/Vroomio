@@ -144,7 +144,7 @@ io.on('connection', function (socket) {
 
     ++numUsers;
     addedUser = true;
-    users.push({username:socket.state.username, hosting: socket.state.hosting});
+    users.push({username:socket.state.username, hosting: socket.state.hosting, score: socket.state.score});
 
     socket.emit('login successful', { 
       username: username,
@@ -220,6 +220,13 @@ io.on('connection', function (socket) {
 
   socket.on('update hosting',function(data){
     users = data.users;
+  });
+
+
+  socket.on('change points',function(data){
+    console.log(data.users);
+    users = data.users;
+    io.emit('change points s2c', data);
   });
 
 });
