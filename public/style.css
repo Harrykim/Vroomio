@@ -54,6 +54,7 @@ tbody{
 td{
   font-family: "Futura", Arial;
   font-size:110%;
+  text-align:center;
   /*background-color:  #f9ecec;*/
 }
  tr:hover{
@@ -277,6 +278,7 @@ ul {
 }
 .inputMessage {
   font-size: 100%;
+  font-family:"Comic Sans MS", cursive, sans-serif;
 }
 
 .log {
@@ -338,7 +340,18 @@ ul {
   border-color: transparent;
   color: white;
   font-family:"Comic Sans MS", cursive, sans-serif;
-  font-weight: bold;
+  font-weight: bold underline;
+}
+
+.board tr:first-child td {
+    background-color:#d3d3d3;
+    text-align: center;
+    font-style: oblique;
+    font-weight: bold;
+}
+
+.board tr td{
+    text-align: center;
 }
 
 

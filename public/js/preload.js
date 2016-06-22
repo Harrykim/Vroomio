@@ -479,7 +479,7 @@ SideScroller.Preload.prototype = {
         // console.log(data);
         // console.log(sorted);
         $('.board').empty();
-        $('.board').append("<tr><td>Kills</td><td>Username</td></tr>")
+        $('.board').append("<tr><td><i class='fa fa-ambulance' aria-hidden='true'></i></td><td>Username</td></tr>")
         for (var i = 0; i < (data.users).length; i++) {
             
             // scoreArray.push(data.users[i].score);
