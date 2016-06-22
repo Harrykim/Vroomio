@@ -154,6 +154,8 @@ SideScroller.Game.prototype = {
     this.game.physics.arcade.overlap(bullets, remotePlayers, processHandler3, null, this);
     this.game.physics.arcade.overlap(remoteBullets, remotePlayers, processHandler2, null, this);
     this.game.physics.arcade.overlap(localPlayer, bullets, processHandler2, null, this);
+    this.game.physics.arcade.collide(remoteBullets, bullets, bulletHandler, null, this);
+    this.game.physics.arcade.collide(remoteBullets, remoteBullets, bulletHandler, null, this);
 if(fireButton){
 if(fireButton.isDown) {
       localPlayer.animations.play('attackk', 40, true);
@@ -774,6 +776,21 @@ function collisionHandler(bullet1, object){
   // console.log("i got to collision handler!")
   bullet1.kill();
 }
+
+function bulletHandler(firstBullet, secondBullet){
+  if(firstBullet.id != secondBullet.id){
+    var explosion = SideScroller.game.add.sprite(firstBullet.x, firstBullet.y, 'explosion');
+    explosion.anchor.setTo(0.5, 0.5);
+    explosion.animations.add('explosion', [0,1,2,3,4,5,6,7,8,9,10,0]);
+    explosion.animations.play('explosion', 25)
+    firstBullet.kill();
+    secondBullet.kill();
+    setTimeout(function(){
+      explosion.kill();
+    }, 3000);
+  }
+}
+
 
 function processHandler2(bullet, object){
   console.log(bullet.id)

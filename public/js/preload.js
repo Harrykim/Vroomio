@@ -15,6 +15,7 @@ SideScroller.Preload.prototype = {
     this.load.spritesheet('player', 'assets/images/enemymoving.png', 68, 96);
     this.load.spritesheet('bang', 'assets/images/heal_001.png', 100, 100, 25);
     this.load.spritesheet('coins', 'assets/images/coins.png', 44, 40, 10);
+    this.load.spritesheet('explosion', 'assets/images/bang.png', 128, 128, 10);
     // this.load.image('playerDuck', 'assets/images/player_duck.png');
     // this.load.image('playerDead', 'assets/images/player_dead.png');
     // this.load.image('goldCoin', 'assets/images/goldCoin.png');
