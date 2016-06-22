@@ -223,7 +223,7 @@ SideScroller.Preload.prototype = {
         for (var i = 0; i < (data.users).length; i++) {
             var order = i + 1
             if(data.users[i].hosting){
-                $('.online').append("<tr class='onlineusers "+ data.users[i].username +"'><td>" + order + ". </td><td>"+ data.users[i].username +"</td><td><a class = 'button is-info modal-button joinchat'  data-target='.modal .is-active'>Join</p></td></tr>" );
+                $('.online').append("<tr class='onlineusers "+ data.users[i].username +"'><td>" + order + ". </td><td>"+ data.users[i].username +"</td><td><a class = 'button is-info modal-button joinchat'  data-target='.modal .is-active'>Join</a></td></tr>" );
                 $("#iframe").attr('src', 'https://appear.in/'+data.users[i].username)
  
             } else {
@@ -252,6 +252,7 @@ SideScroller.Preload.prototype = {
             });  
             onlineUsers(data);
             $(".modal").addClass("is-active");
+            // $(".modal-body").replaceWith("<iframe src='https://appear.in/your-room-name' id ='iframe' width='640' height='480'");
             $(".modal-body").show();
             $(".modal-body2").hide();
             //$(".thankyou").replaceWith("<iframe src='https://appear.in/your-room-name' id ='iframe' width='640' height='480' frameborder='0'></img>")
@@ -280,8 +281,10 @@ SideScroller.Preload.prototype = {
             $(".modal").addClass("is-active");
             $(".nav-item.cancelvideo").hide();
             $(".video").show();
+            $("#iframe").attr('src', 'https://appear.in/' + data.username)
             $(".modal-body").hide();
             $(".modal-body2").show();
+            
            
             hostVideo(data);
             joinVideoChat(data);
@@ -296,14 +299,25 @@ SideScroller.Preload.prototype = {
         console.log("im in join video chat")
         $(".online").on('click', "a", function(){
             console.log("IM IN JOIN CHAT")
-            // $("#iframe").attr('src', 'https://appear.in/'+username);
+            //
+            $("td").toggleClass("cancel")
             $(".modal-body").show();
             $(".modal-body2").hide();
             $(".modal").addClass("is-active");
+            $('.online td').eq(2).html("<a class = 'button is-danger'>Cancel</a>");
+            cancelJoinVideoChat(data);
+
         });
+
+        function cancelJoinVideoChat(data){
+            $(".online td").on('click', "a", function(){
+                $('.online td.cancel').eq(2).html("<a class = 'button is-info modal-button joinchat'  data-target='.modal .is-active'>Join</p>");
+                $(".modal-body").hide();
+                onlineUsers(data);
+                joinVideoChat(data);    
+        });
+    }
     
-
-
     }
 
      function clickInfo(data){
